@@ -39,7 +39,7 @@ public class ViewAdministracion extends JFrame {
 	public ViewAdministracion() {
 		setTitle("Administracion de Clientes");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 450, 307);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -96,6 +96,10 @@ public class ViewAdministracion extends JFrame {
 		});
 		btnNewButton_5.setBounds(221, 152, 186, 36);
 		contentPane.add(btnNewButton_5);
+		
+		JButton btnNewButton_6 = new JButton("Facturacion");
+		btnNewButton_6.setBounds(122, 210, 186, 36);
+		contentPane.add(btnNewButton_6);
 	}
 
 }
