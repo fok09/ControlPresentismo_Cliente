@@ -125,7 +125,6 @@ public class ViewAltaClienteJuridico extends JFrame {
 		contentPane.add(lblHoraDeEntrada);
 		
 		textField_HE_HH = new JTextField();
-		textField_HE_HH.setText("HH");
 		textField_HE_HH.setBounds(151, 166, 57, 20);
 		contentPane.add(textField_HE_HH);
 		textField_HE_HH.setColumns(10);
@@ -135,7 +134,6 @@ public class ViewAltaClienteJuridico extends JFrame {
 		contentPane.add(lblHs);
 		
 		textField_HE_MM = new JTextField();
-		textField_HE_MM.setText("MM");
 		textField_HE_MM.setBounds(247, 166, 57, 20);
 		contentPane.add(textField_HE_MM);
 		textField_HE_MM.setColumns(10);
@@ -149,7 +147,6 @@ public class ViewAltaClienteJuridico extends JFrame {
 		contentPane.add(lblHorarioDeSalida);
 		
 		textField_HS_HH = new JTextField();
-		textField_HS_HH.setText("HH");
 		textField_HS_HH.setColumns(10);
 		textField_HS_HH.setBounds(151, 197, 57, 20);
 		contentPane.add(textField_HS_HH);
@@ -159,7 +156,6 @@ public class ViewAltaClienteJuridico extends JFrame {
 		contentPane.add(label);
 		
 		textField_HS_MM = new JTextField();
-		textField_HS_MM.setText("MM");
 		textField_HS_MM.setColumns(10);
 		textField_HS_MM.setBounds(247, 197, 57, 20);
 		contentPane.add(textField_HS_MM);
