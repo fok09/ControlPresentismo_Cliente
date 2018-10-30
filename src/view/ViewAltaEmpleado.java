@@ -155,12 +155,7 @@ public class ViewAltaEmpleado extends JFrame {
 		JButton btnAltaDeCliente = new JButton("Alta de Empleado");
 		btnAltaDeCliente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-<<<<<<< HEAD
 				if(getStub()){
-=======
-				
-				if (getStub()) {
->>>>>>> refs/remotes/origin/master
 				try {
 				@SuppressWarnings("deprecation")
 				Date fNac = new Date(Integer.parseInt(textField_FNac_DD.getText()), Integer.parseInt(textField_FNac_MM.getText()), Integer.parseInt(textField_FNac_YYYY.getText()));
@@ -178,7 +173,6 @@ public class ViewAltaEmpleado extends JFrame {
 				} catch (RemoteException e1) {
 					e1.printStackTrace();
 				}}
-			}
 			}
 		});
 		btnAltaDeCliente.setBounds(215, 270, 139, 20);
