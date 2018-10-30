@@ -56,7 +56,7 @@ public class ViewAltaClienteFisico extends JFrame {
 	public boolean getStub() {
     	
     	try {
-    		controlPresentismo = (SistemaPresentismo)Naming.lookup ("//localhost/ControladorPresentismoRO");
+    		controlPresentismo = (SistemaPresentismo)Naming.lookup ("//localhost/ControladorPresentismo");
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -68,6 +68,7 @@ public class ViewAltaClienteFisico extends JFrame {
 	 * Create the frame.
 	 */
 	public ViewAltaClienteFisico() {
+		
 		setTitle("Alta de Persona Fisica");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 384, 340);
@@ -172,12 +173,14 @@ public class ViewAltaClienteFisico extends JFrame {
 		JButton btnAltaDeCliente = new JButton("Alta de Cliente");
 		btnAltaDeCliente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				if (getStub()) {
 				try {
 					@SuppressWarnings("deprecation")
 					Time hE =new Time(Integer.parseInt(textField_HE_HH.getText()),Integer.parseInt(textField_HE_MM.getText()),00);
 					@SuppressWarnings("deprecation")
 					Time hS =new Time(Integer.parseInt(textField_HS_HH.getText()),Integer.parseInt(textField_HS_MM.getText()),00);
-
+					
 					PersonaFisicaDTO pfDTO = new PersonaFisicaDTO(
 							textField_Nombre.getText(), 
 							textField_Apellido.getText(),
@@ -190,6 +193,7 @@ public class ViewAltaClienteFisico extends JFrame {
 					controlPresentismo.crearClienteFisico(pfDTO);
 				} catch (RemoteException e1) {
 					e1.printStackTrace();
+				}
 				}
 			}
 		});

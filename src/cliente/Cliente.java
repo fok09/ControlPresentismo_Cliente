@@ -19,7 +19,7 @@ public class Cliente {
 	public boolean getStub() {
     	
     	try {
-    		controlPresentismo = (SistemaPresentismo)Naming.lookup ("//localhost/ControladorPresentismoRO");
+    		controlPresentismo = (SistemaPresentismo)Naming.lookup ("//localhost/ControladorPresentismo");
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
