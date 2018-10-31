@@ -31,8 +31,11 @@ public class ViewFichada extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField textField_Legajo;
 	SistemaPresentismo controlPresentismo;
+	private JTextField textField;
+	private JTextField textField_1;
+	private JTextField textField_2;
+	private JTextField textField_3;
 
 	/**
 	 * Launch the application.
@@ -65,46 +68,33 @@ public class ViewFichada extends JFrame {
 	 * Create the frame.
 	 */
 	public ViewFichada() {
-		setTitle("Fichada de Empleados");
+		setTitle("Factura");
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent arg0) {
 			}
 		});
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 372, 233);
+		setBounds(100, 100, 372, 417);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblTipoDeFichada = new JLabel("Tipo de Fichada");
-		lblTipoDeFichada.setBounds(10, 54, 132, 23);
-		contentPane.add(lblTipoDeFichada);
+		JLabel lbl_NroFactura = new JLabel("Numero de Factura");
+		lbl_NroFactura.setBounds(10, 54, 132, 23);
+		contentPane.add(lbl_NroFactura);
 		
 		System.out.println("pruebacombotipo");
-		JComboBox<String> comboBox_TipoFichada = new JComboBox<String>();
-		comboBox_TipoFichada.setBounds(136, 55, 132, 23);
-		comboBox_TipoFichada.addItem("Entrada");
-		comboBox_TipoFichada.addItem("Salida");
-		contentPane.add(comboBox_TipoFichada);
-		
-		JLabel lblEmpleado = new JLabel("Empleado (Legajo)");
-		lblEmpleado.setBounds(10, 97, 132, 23);
-		contentPane.add(lblEmpleado);
-		
-		textField_Legajo = new JTextField();
-		textField_Legajo.setBounds(136, 97, 132, 23);
-		contentPane.add(textField_Legajo);
-		textField_Legajo.setColumns(10);
 		
 		JLabel lblEmpresa = new JLabel("Empresa");
 		lblEmpresa.setBounds(10, 11, 108, 23);
 		contentPane.add(lblEmpresa);
 		System.out.println("prueba comboempresa");
+		
 		JComboBox<String> comboBox_Empresa = new JComboBox<String>();
 		comboBox_Empresa.setBounds(136, 12, 132, 22);
-		contentPane.add(comboBox_Empresa);
+		
 		if(getStub()){
 			List<Cliente> clientes;
 			clientes=ClienteSrv.getClientes();
@@ -114,9 +104,9 @@ public class ViewFichada extends JFrame {
 			}
 			System.out.println(clientes.size());
 		}
-		
-		JButton btnNewButton = new JButton("Fichar");
-		btnNewButton.addActionListener(new ActionListener() {
+		contentPane.add(comboBox_Empresa);
+		JButton btnNewButton_BuscarFactura = new JButton("Buscar Factura");
+		btnNewButton_BuscarFactura.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(getStub()){
 					try {
@@ -141,8 +131,40 @@ public class ViewFichada extends JFrame {
 			}
 			}
 		});
-		btnNewButton.setBounds(238, 143, 108, 23);
-		contentPane.add(btnNewButton);
+		btnNewButton_BuscarFactura.setBounds(238, 89, 108, 23);
+		contentPane.add(btnNewButton_BuscarFactura);
+		
+		textField = new JTextField();
+		textField.setColumns(10);
+		textField.setBounds(136, 55, 132, 23);
+		contentPane.add(textField);
+		
+		JLabel label = new JLabel("Numero de Factura");
+		label.setBounds(10, 122, 132, 23);
+		contentPane.add(label);
+		
+		textField_1 = new JTextField();
+		textField_1.setColumns(10);
+		textField_1.setBounds(136, 123, 132, 23);
+		contentPane.add(textField_1);
+		
+		JLabel lbl_TipoFactura = new JLabel("Tipo de Factura");
+		lbl_TipoFactura.setBounds(10, 159, 132, 23);
+		contentPane.add(lbl_TipoFactura);
+		
+		textField_2 = new JTextField();
+		textField_2.setColumns(10);
+		textField_2.setBounds(136, 160, 132, 23);
+		contentPane.add(textField_2);
+		
+		JLabel label_1 = new JLabel("CUIT / CUIL");
+		label_1.setBounds(10, 195, 132, 23);
+		contentPane.add(label_1);
+		
+		textField_3 = new JTextField();
+		textField_3.setColumns(10);
+		textField_3.setBounds(136, 196, 132, 23);
+		contentPane.add(textField_3);
 		
 	}
 }
