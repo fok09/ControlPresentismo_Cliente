@@ -7,6 +7,7 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.JButton;
@@ -19,7 +20,11 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import bean.Cliente;
+import dto.EmpleadoDTO;
 import interfaces.SistemaPresentismo;
+import srv.ClienteSrv;
+
 import javax.swing.JComboBox;
 
 public class ViewHorasTrabajadas extends JFrame {
@@ -214,9 +219,18 @@ public class ViewHorasTrabajadas extends JFrame {
 		
 		contentPane.add(btnListar);
 		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setBounds(131, 17, 166, 21);
-		contentPane.add(comboBox);
+		JComboBox comboBox_Empresa = new JComboBox();
+		if(getStub()){
+			List<Cliente> clientes;
+			clientes=ClienteSrv.getClientes();
+			
+			for (int i=0; i<clientes.size();i++){
+				comboBox_Empresa.addItem(clientes.get(i).getCuit_cuil());
+			}
+		}
+		comboBox_Empresa.setBounds(131, 17, 166, 21);
+		contentPane.add(comboBox_Empresa);
+		
 		
 		JLabel lblContratacion = new JLabel("Contratacion");
 		lblContratacion.setBounds(15, 49, 94, 22);
