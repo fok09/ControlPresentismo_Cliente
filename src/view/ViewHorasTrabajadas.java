@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -21,11 +22,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import bean.Cliente;
-import dto.EmpleadoDTO;
+import bean.Contratacion;
 import interfaces.SistemaPresentismo;
 import srv.ClienteSrv;
-
-import javax.swing.JComboBox;
 
 public class ViewHorasTrabajadas extends JFrame {
 
@@ -35,6 +34,9 @@ public class ViewHorasTrabajadas extends JFrame {
 	private DefaultTableModel modeloTabla;
 	private Vector<Vector<String>> datosTabla;
 	private Vector<String> columnNames;
+	private List<Contratacion> contrataciones;
+	private Date cFechaInicio;
+	private Date cFechaFin;
 	private JLabel lblCuitcuil;
 	private JLabel lblFechaInicio;
 	private JLabel lblFechaFin;
@@ -87,6 +89,7 @@ public class ViewHorasTrabajadas extends JFrame {
 	    columnNames.addElement("Legajo");
 	    columnNames.addElement("Nombre");
 	    columnNames.addElement("Total horas");
+	    columnNames.addElement("Horas Ausente");
 		iniciarPantalla();
 	}
 	
@@ -196,33 +199,46 @@ public class ViewHorasTrabajadas extends JFrame {
 		contentPane.add(label_1);
 		contentPane.add(textField_FI_AAAA);
 		
-		JButton btnListar = new JButton("Listar");
-		btnListar.setBounds(293, 156, 112, 23);
-		btnListar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0)
-			{
-				if (getStub()) {
-					try {
-						String cuit = textField_CUITCUIL.getText();
-						String mesInicio = textField_FI_MM.getText();
-						String mesFin =textField_FF_MM.getText();
-						Date fechaInicio = new GregorianCalendar(Integer.parseInt(textField_FI_AAAA.getText()), (Integer.parseInt(mesInicio))-1, Integer.parseInt(textField_FI_DD.getText())).getTime();
-						Date fechaFin = new GregorianCalendar(Integer.parseInt(textField_FF_AAAA.getText()), (Integer.parseInt(mesFin))-1, Integer.parseInt(textField_FF_DD.getText())).getTime();
-						datosTabla = controlPresentismo.getHorasTrabajadasTotales(cuit,fechaInicio,fechaFin);
-						actualizarTabla();
-					} catch (RemoteException e1) {
-						e1.printStackTrace();
+		JComboBox comboBox_Contratacion = new JComboBox();
+		comboBox_Contratacion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String seleccion = comboBox_Contratacion.getSelectedItem().toString();
+				int cod = Integer.parseInt(seleccion.substring(0,seleccion.indexOf(" ")));
+				for (Contratacion c : contrataciones ) {
+					if (c.getId()==cod) {
+						cFechaInicio = c.getFechaInicial();
+						cFechaFin = c.getFechaFinal();
 					}
-					}
+				}
+	
+				
 			}
 		});
-		
-		contentPane.add(btnListar);
+		comboBox_Contratacion.setBounds(131, 50, 166, 21);
+		contentPane.add(comboBox_Contratacion);
 		
 		JComboBox comboBox_Empresa = new JComboBox();
 		comboBox_Empresa.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e) 
+			{
+				if (getStub()) {
+					
+					try {
+						String cuitEmpresa = (String) comboBox_Empresa.getSelectedItem();
+//						List<Contratacion> contrataciones;
+						contrataciones = controlPresentismo.getContratacionesCliente(cuitEmpresa);
+						comboBox_Contratacion.removeAllItems();
+						for (Contratacion c : contrataciones){
+							comboBox_Contratacion.addItem(c.getId() + " " + c.getServicio().getNombre() + " - " + c.getFechaInicial() + " a " + c.getFechaFinal());							
+						}
+					} catch (RemoteException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
+				}
 			}
+			
 		});
 		if(getStub()){
 			List<Cliente> clientes;
@@ -236,17 +252,41 @@ public class ViewHorasTrabajadas extends JFrame {
 		contentPane.add(comboBox_Empresa);
 		
 		
+		JButton btnListar = new JButton("Listar");
+		btnListar.setBounds(293, 156, 112, 23);
+		btnListar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0)
+			{
+				if (getStub()) {
+					try {
+						Contratacion cont = new Contratacion();
+						String cuit = (String) comboBox_Empresa.getSelectedItem();
+						String seleccion = comboBox_Contratacion.getSelectedItem().toString();
+						int cod = Integer.parseInt(seleccion.substring(0,seleccion.indexOf(" ")));
+						for (Contratacion c : contrataciones ) {
+							if (c.getId()==cod) {
+								cont = c;
+							}
+						}
+						
+						datosTabla = controlPresentismo.getHorasTrabajadasTotales(cuit,cFechaInicio,cFechaFin, cont);
+						actualizarTabla();
+					} catch (RemoteException e1) {
+						e1.printStackTrace();
+					}
+					}
+			}
+		});
+		
+		contentPane.add(btnListar);
+		
+		
+		
 		JLabel lblContratacion = new JLabel("Contratacion");
 		lblContratacion.setBounds(15, 49, 94, 22);
 		contentPane.add(lblContratacion);
 		
-		JComboBox comboBox_Contratacion = new JComboBox();
-		comboBox_Contratacion.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		comboBox_Contratacion.setBounds(131, 50, 166, 21);
-		contentPane.add(comboBox_Contratacion);
+		
 		modeloTabla = (DefaultTableModel) table.getModel();
 	    modeloTabla.setDataVector(datosTabla, columnNames);
 	}
