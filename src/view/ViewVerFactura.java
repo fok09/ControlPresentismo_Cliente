@@ -1,6 +1,5 @@
 package view;
 
-import java.awt.Checkbox;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,11 +7,10 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -21,18 +19,10 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import bean.Cliente;
-import bean.Empleado;
 import bean.Factura;
-import dto.ClienteDTO;
-import dto.EmpleadoDTO;
-import dto.FacturaDTO;
-import dto.FichadaDTO;
-
 import interfaces.SistemaPresentismo;
 import srv.ClienteSrv;
 import srv.FacturaSrv;
-
-import javax.swing.JCheckBox;
 
 public class ViewVerFactura extends JFrame {
 
@@ -211,7 +201,7 @@ public class ViewVerFactura extends JFrame {
 				if (getStub()){
 				
 					Cliente cliente = ClienteSrv.getClienteByCuit(comboBox_CUITCUIL.getSelectedItem().toString());
-					Factura f = cliente.buscarFactura(Integer.parseInt(textField_NroFactura.getText()));
+					Factura f = FacturaSrv.getFacturaByNro(Integer.parseInt(textField_NroFactura.getText()));
 					
 					textField_Empresa.setText(cliente.getCuit_cuil());
 					textField_NroFac.setText(String.valueOf(f.getNroFactura()));
@@ -239,7 +229,7 @@ public class ViewVerFactura extends JFrame {
 				if (getStub()){
 					try {
 						Cliente cliente = ClienteSrv.getClienteByCuit(textField_Empresa.getText());
-						Factura f = cliente.buscarFactura(Integer.parseInt(textField_NroFactura.getText()));
+						Factura f = FacturaSrv.getFacturaByNro(Integer.parseInt(textField_NroFac.getText()));
 				
 						controlPresentismo.registrarPago(f.getNroFactura());
 					

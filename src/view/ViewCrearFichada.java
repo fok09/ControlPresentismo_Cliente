@@ -135,9 +135,16 @@ public class ViewCrearFichada extends JFrame {
 								emp= c.obtenerEmpleadoPorLegajo(textField_Legajo.getText());
 							}
 						}
+						String tipo;
 						
+						if (comboBox_TipoFichada.getSelectedItem().toString().equals("Entrada")) {
+							tipo="E";
+													}
+						else {
+							tipo="S";
+						}
 						FichadaDTO fDTO = new FichadaDTO(
-							comboBox_TipoFichada.getSelectedItem().toString(),
+							tipo,
 							emp,
 							hora,
 							fecha);

@@ -55,7 +55,7 @@ public class ViewPrincipal extends JFrame {
 		JButton btnNewButton_1 = new JButton("Reportes");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ViewReportes reportes = new ViewReportes();
+				ViewHorasTrabajadas reportes = new ViewHorasTrabajadas();
 				reportes.setVisible(true);
 			}
 		});

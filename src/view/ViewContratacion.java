@@ -129,7 +129,8 @@ public class ViewContratacion extends JFrame {
 			servicios=ServicioSrv.getServicios();
 
 			for (int i=0; i<servicios.size();i++){
-				comboBox_Servicio.addItem(servicios.get(i).getNombre().toString());
+				comboBox_Servicio.addItem(servicios.get(i).getId() + " "
+			+servicios.get(i).getNombre().toString());
 			}
 		}
 		contentPane.add(comboBox_Servicio);
@@ -214,8 +215,10 @@ public class ViewContratacion extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if(getStub()){
 					try {
+						String seleccion = comboBox_Servicio.getSelectedItem().toString();
+						int cod = Integer.parseInt(seleccion.substring(0,seleccion.indexOf(" ")));
 						Servicio sv = new Servicio();
-						sv = ServicioSrv.getServicio(comboBox_Servicio.getSelectedItem().toString());
+						sv = ServicioSrv.getServicio(cod);
 						Cliente cl = new Cliente();
 						cl = ClienteSrv.getClienteByCuit(comboBox_Empresa.getSelectedItem().toString());
 						Date fIni = new GregorianCalendar(Integer.parseInt(textField_FI_AAAA.getText()), (Integer.parseInt(textField_FI_MM.getText()))-1, Integer.parseInt(textField_FI_DD.getText())).getTime();
