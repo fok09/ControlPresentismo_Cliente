@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Checkbox;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,6 +8,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -19,10 +22,16 @@ import javax.swing.border.EmptyBorder;
 
 import bean.Cliente;
 import bean.Empleado;
+import bean.Factura;
+import dto.ClienteDTO;
+import dto.EmpleadoDTO;
+import dto.FacturaDTO;
 import dto.FichadaDTO;
 
 import interfaces.SistemaPresentismo;
 import srv.ClienteSrv;
+import srv.FacturaSrv;
+
 import javax.swing.JCheckBox;
 
 public class ViewVerFactura extends JFrame {
@@ -37,9 +46,9 @@ public class ViewVerFactura extends JFrame {
 	private JTextField textField_FF_DD;
 	private JTextField textField_FF_MM;
 	private JTextField textField_FF_AAAA;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
+	private JTextField textField_NroFactura;
+	private JTextField textField_NroFac;
+	private JTextField textField_tipoFactura;
 	private JTextField textField_montoTotal;
 
 	/**
@@ -110,16 +119,16 @@ public class ViewVerFactura extends JFrame {
 		JComboBox<String> comboBox_CUITCUIL = new JComboBox<String>();
 		comboBox_CUITCUIL.setBounds(136, 12, 132, 22);
 		
-//		if(getStub()){
-//			List<Cliente> clientes;
-//			clientes=ClienteSrv.getClientes();
-//			System.out.println("prueba comboempresa antes for");
-//			for (int i=0; i<clientes.size();i++){
-//				comboBox_CUITCUIL.addItem(clientes.get(i).getCuit_cuil());
-//			}
-//			System.out.println(clientes.size());
-//		}
-//		contentPane.add(comboBox_CUITCUIL);
+		List<Cliente> clientes;
+		clientes=ClienteSrv.getClientes();
+		
+		for (int i=0; i<clientes.size();i++){
+			comboBox_CUITCUIL.addItem(clientes.get(i).getCuit_cuil());
+		}
+	
+			System.out.println(clientes.size());
+			
+		contentPane.add(comboBox_CUITCUIL);
 		
 		JLabel lblNumFact = new JLabel("Numero de Factura");
 		lblNumFact.setBounds(10, 131, 115, 20);
@@ -159,39 +168,31 @@ public class ViewVerFactura extends JFrame {
 		lblTipoDeFactura.setBounds(10, 193, 108, 23);
 		contentPane.add(lblTipoDeFactura);
 		
-		textField = new JTextField();
-		textField.setColumns(10);
-		textField.setBounds(136, 55, 132, 23);
-		contentPane.add(textField);
+		textField_NroFactura = new JTextField();
+		textField_NroFactura.setColumns(10);
+		textField_NroFactura.setBounds(136, 55, 132, 23);
+		contentPane.add(textField_NroFactura);
 		
-		JButton btnBuscar = new JButton("Buscar");
-		btnBuscar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnBuscar.setBounds(298, 55, 132, 23);
-		contentPane.add(btnBuscar);
+		textField_NroFac = new JTextField();
+		textField_NroFac.setEditable(false);
+		textField_NroFac.setColumns(10);
+		textField_NroFac.setBounds(136, 131, 132, 23);
+		contentPane.add(textField_NroFac);
 		
-		textField_1 = new JTextField();
-		textField_1.setEditable(false);
-		textField_1.setColumns(10);
-		textField_1.setBounds(136, 131, 132, 23);
-		contentPane.add(textField_1);
-		
-		textField_2 = new JTextField();
-		textField_2.setEditable(false);
-		textField_2.setColumns(10);
-		textField_2.setBounds(136, 194, 132, 23);
-		contentPane.add(textField_2);
+		textField_tipoFactura = new JTextField();
+		textField_tipoFactura.setEditable(false);
+		textField_tipoFactura.setColumns(10);
+		textField_tipoFactura.setBounds(136, 194, 132, 23);
+		contentPane.add(textField_tipoFactura);
 		
 		JLabel lblPagado = new JLabel("Pagado");
 		lblPagado.setBounds(10, 227, 108, 23);
 		contentPane.add(lblPagado);
 		
-		JCheckBox checkBox = new JCheckBox("");
-		checkBox.setEnabled(false);
-		checkBox.setBounds(136, 227, 97, 23);
-		contentPane.add(checkBox);
+		JCheckBox checkBox_pagado = new JCheckBox("");
+		checkBox_pagado.setEnabled(false);
+		checkBox_pagado.setBounds(136, 227, 97, 23);
+		contentPane.add(checkBox_pagado);
 		
 		JLabel lblTotal = new JLabel("Total");
 		lblTotal.setBounds(10, 257, 115, 20);
@@ -203,9 +204,56 @@ public class ViewVerFactura extends JFrame {
 		textField_montoTotal.setBounds(136, 257, 132, 23);
 		contentPane.add(textField_montoTotal);
 		
+		
+		JButton btnBuscar = new JButton("Buscar");
+		btnBuscar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {			
+				if (getStub()){
+				
+					Cliente cliente = ClienteSrv.getClienteByCuit(comboBox_CUITCUIL.getSelectedItem().toString());
+					Factura f = cliente.buscarFactura(Integer.parseInt(textField_NroFactura.getText()));
+					
+					textField_Empresa.setText(cliente.getCuit_cuil());
+					textField_NroFac.setText(String.valueOf(f.getNroFactura()));
+					
+					textField_FF_DD.setText(String.valueOf(f.getFecha().getDay()));
+					textField_FF_MM.setText(String.valueOf(f.getFecha().getMonth()));
+					textField_FF_AAAA.setText(String.valueOf(f.getFecha().getYear()));
+					
+					textField_tipoFactura.setText(f.getTipo());
+					
+					if(f.isPagado())
+						checkBox_pagado.setSelected(true);
+						
+					textField_montoTotal.setText(String.valueOf(f.getMonto()));
+					}
+				
+			}
+		});
+		btnBuscar.setBounds(298, 55, 132, 23);
+		contentPane.add(btnBuscar);
+
 		JButton btn_Pagar = new JButton("Pagar");
 		btn_Pagar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if (getStub()){
+					try {
+						Cliente cliente = ClienteSrv.getClienteByCuit(textField_Empresa.getText());
+						Factura f = cliente.buscarFactura(Integer.parseInt(textField_NroFactura.getText()));
+				
+						controlPresentismo.registrarPago(f.getNroFactura());
+					
+					
+						checkBox_pagado.setSelected(true);
+					
+						FacturaSrv.grabarFactura(f);
+					
+					} catch (RemoteException e1) {
+	
+						e1.printStackTrace();
+					}
+				
+				}
 			}
 		});
 		btn_Pagar.setBounds(136, 299, 132, 32);

@@ -47,7 +47,7 @@ public class ViewPrincipal extends JFrame {
 		btnNewButton.setBounds(109, 56, 211, 46);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				ViewFichada fichada = new ViewFichada();
+				ViewCrearFichada fichada = new ViewCrearFichada();
 				fichada.setVisible(true);
 			}
 		});

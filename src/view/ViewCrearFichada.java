@@ -7,6 +7,10 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
+import java.sql.Time;
+import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -120,20 +124,23 @@ public class ViewCrearFichada extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if(getStub()){
 					try {
+						LocalDateTime hora = LocalDateTime.now();
+						Date fecha = Calendar.getInstance().getTime();
 						System.out.println("prueba");
 						List<Cliente> clientes;
 						clientes=ClienteSrv.getClientes();
 						Empleado emp= new Empleado();
 						for(Cliente c: clientes) {
 							if(c.getCuit_cuil().equals(comboBox_Empresa.getSelectedItem())){
-								
 								emp= c.obtenerEmpleadoPorLegajo(textField_Legajo.getText());
 							}
 						}
 						
 						FichadaDTO fDTO = new FichadaDTO(
-						(String) comboBox_TipoFichada.getSelectedItem(),
-						emp);
+							comboBox_TipoFichada.getSelectedItem().toString(),
+							emp,
+							hora,
+							fecha);
 				controlPresentismo.altaFichada(fDTO);
 					} catch (RemoteException e1) {
 					e1.printStackTrace();
