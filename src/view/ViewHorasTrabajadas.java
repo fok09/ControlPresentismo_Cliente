@@ -220,6 +220,10 @@ public class ViewHorasTrabajadas extends JFrame {
 		contentPane.add(btnListar);
 		
 		JComboBox comboBox_Empresa = new JComboBox();
+		comboBox_Empresa.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		if(getStub()){
 			List<Cliente> clientes;
 			clientes=ClienteSrv.getClientes();
@@ -237,6 +241,10 @@ public class ViewHorasTrabajadas extends JFrame {
 		contentPane.add(lblContratacion);
 		
 		JComboBox comboBox_Contratacion = new JComboBox();
+		comboBox_Contratacion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		comboBox_Contratacion.setBounds(131, 50, 166, 21);
 		contentPane.add(comboBox_Contratacion);
 		modeloTabla = (DefaultTableModel) table.getModel();
