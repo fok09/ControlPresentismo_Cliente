@@ -5,7 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
-import java.sql.Date;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -46,7 +47,7 @@ public class ViewAltaEmpleado extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ViewAltaClienteFisico frame = new ViewAltaClienteFisico();
+					ViewAltaEmpleado frame = new ViewAltaEmpleado();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -155,21 +156,22 @@ public class ViewAltaEmpleado extends JFrame {
 		JButton btnAltaDeCliente = new JButton("Alta de Empleado");
 		btnAltaDeCliente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(getStub()){
+				if (getStub()){
 				try {
-				@SuppressWarnings("deprecation")
-				Date fNac = new Date(Integer.parseInt(textField_FNac_DD.getText()), Integer.parseInt(textField_FNac_MM.getText()), Integer.parseInt(textField_FNac_YYYY.getText()));
-				EmpleadoDTO eDTO = new EmpleadoDTO(
-							//comboBox_Empresa.getSelectedItem().toString(), 
-							textField_Nombre.getText(), 
-							textField_Apellido.getText(),
-							textField_Mail.getText(),
-							textField_DNI.getText(), 
-							textField_Telefono.getText(),
-							fNac,
-							textField_Legajo.getText()
-							);
-					controlPresentismo.agregarEmpleado(eDTO);
+					@SuppressWarnings("deprecation")
+//					Date fNac = new Date(Integer.parseInt(textField_FNac_DD.getText()), Integer.parseInt(textField_FNac_MM.getText()), Integer.parseInt(textField_FNac_YYYY.getText()));
+					Date fNac = new GregorianCalendar(Integer.parseInt(textField_FNac_YYYY.getText()), (Integer.parseInt(textField_FNac_MM.getText()))-1, Integer.parseInt(textField_FNac_DD.getText())).getTime();
+					EmpleadoDTO eDTO = new EmpleadoDTO(
+								//comboBox_Empresa.getSelectedItem().toString(), 
+								textField_Nombre.getText(), 
+								textField_Apellido.getText(),
+								textField_Mail.getText(),
+								textField_DNI.getText(), 
+								textField_Telefono.getText(),
+								fNac,
+								textField_Legajo.getText()
+								);
+						controlPresentismo.agregarEmpleado(eDTO,comboBox_Empresa.getSelectedItem().toString());
 				} catch (RemoteException e1) {
 					e1.printStackTrace();
 				}}
