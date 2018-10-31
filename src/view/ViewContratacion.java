@@ -19,10 +19,14 @@ import javax.swing.border.EmptyBorder;
 
 import bean.Cliente;
 import bean.Empleado;
+import bean.Servicio;
+import dto.ContratacionDTO;
 import dto.FichadaDTO;
 
 import interfaces.SistemaPresentismo;
 import srv.ClienteSrv;
+import srv.ContratacionSrv;
+import srv.ServicioSrv;
 
 public class ViewContratacion extends JFrame {
 
@@ -39,6 +43,7 @@ public class ViewContratacion extends JFrame {
 	private JTextField textField_FF_DD;
 	private JTextField textField_FF_MM;
 	private JTextField textField_FF_AAAA;
+	private JTextField textField_CantEmp;
 
 	/**
 	 * Launch the application.
@@ -78,7 +83,7 @@ public class ViewContratacion extends JFrame {
 			}
 		});
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 372, 297);
+		setBounds(100, 100, 372, 337);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -91,8 +96,14 @@ public class ViewContratacion extends JFrame {
 		System.out.println("pruebacombotipo");
 		JComboBox<String> comboBox_Empresa = new JComboBox<String>();
 		comboBox_Empresa.setBounds(136, 55, 132, 23);
-		comboBox_Empresa.addItem("Entrada");
-		comboBox_Empresa.addItem("Salida");
+		if(getStub()){
+			List<Cliente> clientes;
+			clientes=ClienteSrv.getClientes();
+			
+			for (int i=0; i<clientes.size();i++){
+				comboBox_Empresa.addItem(clientes.get(i).getCuit_cuil());
+			}
+		}
 		contentPane.add(comboBox_Empresa);
 		
 		JLabel lblCantHoras = new JLabel("Horas a contratar");
@@ -111,44 +122,32 @@ public class ViewContratacion extends JFrame {
 		
 		JComboBox<String> comboBox_Servicio = new JComboBox<String>();
 		comboBox_Servicio.setBounds(136, 12, 132, 22);
-		
 		if(getStub()){
-			List<Cliente> clientes;
-			clientes=ClienteSrv.getClientes();
-			System.out.println("prueba comboempresa antes for");
-			for (int i=0; i<clientes.size();i++){
-				comboBox_Servicio.addItem(clientes.get(i).getCuit_cuil());
+			List<Servicio> servicios;
+			servicios=ServicioSrv.getServicios();
+
+			for (int i=0; i<servicios.size();i++){
+				comboBox_Servicio.addItem(servicios.get(i).getNombre());
 			}
-			System.out.println(clientes.size());
 		}
+		
 		contentPane.add(comboBox_Servicio);
 		JButton btnNewButton = new JButton("Generar Contratacion");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(getStub()){
 					try {
-						System.out.println("prueba");
-						List<Cliente> clientes;
-						clientes=ClienteSrv.getClientes();
-						Empleado emp= new Empleado();
-						for(Cliente c: clientes) {
-							if(c.getCuit_cuil().equals(comboBox_Servicio.getSelectedItem())){
-								
-								emp= c.obtenerEmpleadoPorLegajo(textField_CantHoras.getText());
-							}
-						}
-						
-						FichadaDTO fDTO = new FichadaDTO(
-						(String) comboBox_Empresa.getSelectedItem(),
+						ContratacionDTO cDTO = new ContratacionDTO(
+						comboBox_Servicio.getSelectedItem().toString(),
 						emp);
-				controlPresentismo.altaFichada(fDTO);
+				controlPresentismo.crearContratacion(cDTO);
 					} catch (RemoteException e1) {
 					e1.printStackTrace();
 				}
 			}
 			}
 		});
-		btnNewButton.setBounds(174, 227, 172, 23);
+		btnNewButton.setBounds(174, 264, 172, 23);
 		contentPane.add(btnNewButton);
 		
 		JLabel lblFechaDeInicio = new JLabel("Fecha de Inicio");
@@ -212,6 +211,18 @@ public class ViewContratacion extends JFrame {
 		JComboBox<String> comboBox_TipoFactura = new JComboBox<String>();
 		comboBox_TipoFactura.setBounds(136, 194, 132, 22);
 		contentPane.add(comboBox_TipoFactura);
+		
+		JLabel lblCantidadDeEmpleados = new JLabel("Cantidad de Empleados");
+		lblCantidadDeEmpleados.setBounds(10, 230, 132, 23);
+		contentPane.add(lblCantidadDeEmpleados);
+		
+		textField_CantEmp = new JTextField();
+		textField_CantEmp.setColumns(10);
+		textField_CantEmp.setBounds(136, 230, 132, 23);
+		contentPane.add(textField_CantEmp);
+		comboBox_TipoFactura.addItem("A");
+		comboBox_TipoFactura.addItem("B");
+		comboBox_TipoFactura.addItem("C");
 		
 	}
 }
