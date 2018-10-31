@@ -236,16 +236,24 @@ public class ViewVerFactura extends JFrame {
 		JButton btn_Pagar = new JButton("Pagar");
 		btn_Pagar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if (getStub()){
+					try {
+						Cliente cliente = ClienteSrv.getClienteByCuit(textField_Empresa.getText());
+						Factura f = cliente.buscarFactura(Integer.parseInt(textField_NroFactura.getText()));
 				
-				Cliente cliente = ClienteSrv.getClienteByCuit(textField_Empresa.getText());
-				Factura f = cliente.buscarFactura(Integer.parseInt(textField_NroFactura.getText()));
+						controlPresentismo.registrarPago(f.getNroFactura());
+					
+					
+						checkBox_pagado.setSelected(true);
+					
+						FacturaSrv.grabarFactura(f);
+					
+					} catch (RemoteException e1) {
+	
+						e1.printStackTrace();
+					}
 				
-				f.registrarPago();
-				
-				checkBox_pagado.setSelected(true);
-				
-				FacturaSrv.grabarFactura(f);
-				
+				}
 			}
 		});
 		btn_Pagar.setBounds(136, 299, 132, 32);
