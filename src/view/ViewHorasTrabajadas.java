@@ -3,24 +3,23 @@ package view;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.Naming;
 import java.rmi.RemoteException;
-import java.sql.Date;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Vector;
 
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import interfaces.SistemaPresentismo;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
 
 public class ViewHorasTrabajadas extends JFrame {
 
@@ -59,28 +58,42 @@ public class ViewHorasTrabajadas extends JFrame {
 		});
 	}
 	
+	public boolean getStub() {
+    	
+    	try {
+    		controlPresentismo = (SistemaPresentismo)Naming.lookup ("//localhost/ControladorPresentismo");
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+    }
+	
+	public void actualizarTabla()
+	{
+		modeloTabla = (DefaultTableModel) table.getModel();
+		modeloTabla.setDataVector(datosTabla, columnNames);
+	}
 	
 	public ViewHorasTrabajadas()
 	{
 		setTitle("Horas Trabajadas");
-		iniciarVentasAnteriores();
-	}
-	
-	public ViewHorasTrabajadas(SistemaPresentismo sp) throws RemoteException
-	{
-		String cuit_cuil = "";
-//		Date fechaInicio = new Date;
-//		Date fechaFin;
-		
-		this.controlPresentismo = sp;
 		columnNames = new Vector<String>();
 	    columnNames.addElement("Legajo");
 	    columnNames.addElement("Nombre");
 	    columnNames.addElement("Total horas");
-//	    columnNames.addElement("Horas Ausente");
-//	    datosTabla = controlPresentismo.getHorasTrabajadas( cuit_cuil,  fechaInicio,  fechaFin);
-		iniciarVentasAnteriores();
+		iniciarPantalla();
 	}
+	
+//	public ViewHorasTrabajadas() throws RemoteException
+//	{
+//		String cuit_cuil = "";
+//		Date fechaInicio = new Date;
+//		Date fechaFin;
+		
+//	    columnNames.addElement("Horas Ausente");
+//		iniciarVentasAnteriores();
+//	}
 	
 	
 	
@@ -88,7 +101,7 @@ public class ViewHorasTrabajadas extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	private void iniciarVentasAnteriores() {
+	private void iniciarPantalla() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 557, 472);
 		contentPane = new JPanel();
@@ -179,6 +192,25 @@ public class ViewHorasTrabajadas extends JFrame {
 		
 		JButton btnListar = new JButton("Listar");
 		btnListar.setBounds(290, 121, 112, 23);
+		btnListar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0)
+			{
+				if (getStub()) {
+					try {
+						String cuit = textField_CUITCUIL.getText();
+						String mesInicio = textField_FI_MM.getText();
+						String mesFin =textField_FF_MM.getText();
+						Date fechaInicio = new GregorianCalendar(Integer.parseInt(textField_FI_AAAA.getText()), (Integer.parseInt(mesInicio))-1, Integer.parseInt(textField_FI_DD.getText())).getTime();
+						Date fechaFin = new GregorianCalendar(Integer.parseInt(textField_FF_AAAA.getText()), (Integer.parseInt(mesFin))-1, Integer.parseInt(textField_FF_DD.getText())).getTime();
+						datosTabla = controlPresentismo.getHorasTrabajadasTotales(cuit,fechaInicio,fechaFin);
+						actualizarTabla();
+					} catch (RemoteException e1) {
+						e1.printStackTrace();
+					}
+					}
+			}
+		});
+		
 		contentPane.add(btnListar);
 		modeloTabla = (DefaultTableModel) table.getModel();
 	    modeloTabla.setDataVector(datosTabla, columnNames);
