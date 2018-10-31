@@ -7,6 +7,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -101,7 +103,7 @@ public class ViewContratacion extends JFrame {
 			clientes=ClienteSrv.getClientes();
 			
 			for (int i=0; i<clientes.size();i++){
-				comboBox_Empresa.addItem(clientes.get(i).getCuit_cuil());
+				comboBox_Empresa.addItem(clientes.get(i).getCuit_cuil().toString());
 			}
 		}
 		contentPane.add(comboBox_Empresa);
@@ -127,28 +129,10 @@ public class ViewContratacion extends JFrame {
 			servicios=ServicioSrv.getServicios();
 
 			for (int i=0; i<servicios.size();i++){
-				comboBox_Servicio.addItem(servicios.get(i).getNombre());
+				comboBox_Servicio.addItem(servicios.get(i).getNombre().toString());
 			}
 		}
-		
 		contentPane.add(comboBox_Servicio);
-		JButton btnNewButton = new JButton("Generar Contratacion");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(getStub()){
-					try {
-						ContratacionDTO cDTO = new ContratacionDTO(
-						comboBox_Servicio.getSelectedItem().toString(),
-						emp);
-				controlPresentismo.crearContratacion(cDTO);
-					} catch (RemoteException e1) {
-					e1.printStackTrace();
-				}
-			}
-			}
-		});
-		btnNewButton.setBounds(174, 264, 172, 23);
-		contentPane.add(btnNewButton);
 		
 		JLabel lblFechaDeInicio = new JLabel("Fecha de Inicio");
 		lblFechaDeInicio.setBounds(10, 131, 115, 20);
@@ -210,6 +194,9 @@ public class ViewContratacion extends JFrame {
 		
 		JComboBox<String> comboBox_TipoFactura = new JComboBox<String>();
 		comboBox_TipoFactura.setBounds(136, 194, 132, 22);
+		comboBox_TipoFactura.addItem("A");
+		comboBox_TipoFactura.addItem("B");
+		comboBox_TipoFactura.addItem("C");
 		contentPane.add(comboBox_TipoFactura);
 		
 		JLabel lblCantidadDeEmpleados = new JLabel("Cantidad de Empleados");
@@ -220,9 +207,39 @@ public class ViewContratacion extends JFrame {
 		textField_CantEmp.setColumns(10);
 		textField_CantEmp.setBounds(136, 230, 132, 23);
 		contentPane.add(textField_CantEmp);
-		comboBox_TipoFactura.addItem("A");
-		comboBox_TipoFactura.addItem("B");
-		comboBox_TipoFactura.addItem("C");
+		
+		
+		JButton btnNewButton = new JButton("Generar Contratacion");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(getStub()){
+					try {
+						Servicio sv = new Servicio();
+						sv = ServicioSrv.getServicio(comboBox_Servicio.getSelectedItem().toString());
+						Cliente cl = new Cliente();
+						cl = ClienteSrv.getClienteByCuit(comboBox_Empresa.getSelectedItem().toString());
+						Date fIni = new GregorianCalendar(Integer.parseInt(textField_FI_AAAA.getText()), (Integer.parseInt(textField_FI_MM.getText()))-1, Integer.parseInt(textField_FI_DD.getText())).getTime();
+						Date fFin = new GregorianCalendar(Integer.parseInt(textField_FF_AAAA.getText()), (Integer.parseInt(textField_FF_MM.getText()))-1, Integer.parseInt(textField_FF_DD.getText())).getTime();
+						ContratacionDTO cDTO = new ContratacionDTO(
+						sv,
+						cl,
+						Integer.parseInt(textField_CantHoras.getText()),
+						Integer.parseInt(textField_CantEmp.getText()),
+						fIni,
+						fFin,
+						comboBox_TipoFactura.getSelectedItem().toString(),
+						sv.getMonto()						
+						);
+				controlPresentismo.crearContratacion(cDTO);
+					} catch (RemoteException e1) {
+					e1.printStackTrace();
+				}
+			}
+			}
+		});
+		btnNewButton.setBounds(174, 264, 172, 23);
+		contentPane.add(btnNewButton);
+		
 		
 	}
 }
