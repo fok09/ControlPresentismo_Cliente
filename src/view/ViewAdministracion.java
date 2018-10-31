@@ -39,7 +39,7 @@ public class ViewAdministracion extends JFrame {
 	public ViewAdministracion() {
 		setTitle("Administracion de Clientes");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 307);
+		setBounds(100, 100, 627, 307);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -97,9 +97,25 @@ public class ViewAdministracion extends JFrame {
 		btnNewButton_5.setBounds(221, 152, 186, 36);
 		contentPane.add(btnNewButton_5);
 		
-		JButton btnNewButton_6 = new JButton("Facturacion");
-		btnNewButton_6.setBounds(122, 210, 186, 36);
-		contentPane.add(btnNewButton_6);
+		JButton btnNewButton_Contratacion = new JButton("Contratacion");
+		btnNewButton_Contratacion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ViewContratacion altaContratacion = new ViewContratacion();
+				altaContratacion.setVisible(true);
+			}
+		});
+		btnNewButton_Contratacion.setBounds(417, 37, 186, 36);
+		contentPane.add(btnNewButton_Contratacion);
+		
+		JButton button_Facturacion = new JButton("Facturacion");
+		button_Facturacion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ViewVerFactura altaFactura = new ViewVerFactura();
+				altaFactura.setVisible(true);
+			}
+		});
+		button_Facturacion.setBounds(417, 94, 186, 36);
+		contentPane.add(button_Facturacion);
 	}
 
 }
