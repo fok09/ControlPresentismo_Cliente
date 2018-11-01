@@ -39,6 +39,8 @@ public class ViewAltaEmpleado extends JFrame {
 	private JTextField textField_FNac_DD;
 	private JTextField textField_FNac_MM;
 	private JTextField textField_FNac_YYYY;
+	private JTextField textField_tipoEmpleado;
+	private JTextField textField_cantHoras;
 	
 	/**
 	 * Launch the application.
@@ -73,7 +75,7 @@ public class ViewAltaEmpleado extends JFrame {
 	public ViewAltaEmpleado() {
 		setTitle("Alta de Empleado");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 384, 340);
+		setBounds(100, 100, 414, 414);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -153,33 +155,6 @@ public class ViewAltaEmpleado extends JFrame {
 		lblFechaDeNacimiento.setBounds(10, 227, 115, 20);
 		contentPane.add(lblFechaDeNacimiento);
 		
-		JButton btnAltaDeCliente = new JButton("Alta de Empleado");
-		btnAltaDeCliente.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (getStub()){
-				try {
-					@SuppressWarnings("deprecation")
-//					Date fNac = new Date(Integer.parseInt(textField_FNac_DD.getText()), Integer.parseInt(textField_FNac_MM.getText()), Integer.parseInt(textField_FNac_YYYY.getText()));
-					Date fNac = new GregorianCalendar(Integer.parseInt(textField_FNac_YYYY.getText()), (Integer.parseInt(textField_FNac_MM.getText()))-1, Integer.parseInt(textField_FNac_DD.getText())).getTime();
-					EmpleadoDTO eDTO = new EmpleadoDTO(
-								//comboBox_Empresa.getSelectedItem().toString(), 
-								textField_Nombre.getText(), 
-								textField_Apellido.getText(),
-								textField_Mail.getText(),
-								textField_DNI.getText(), 
-								textField_Telefono.getText(),
-								fNac,
-								textField_Legajo.getText()
-								);
-						controlPresentismo.agregarEmpleado(eDTO,comboBox_Empresa.getSelectedItem().toString());
-				} catch (RemoteException e1) {
-					e1.printStackTrace();
-				}}
-			}
-		});
-		btnAltaDeCliente.setBounds(215, 270, 139, 20);
-		contentPane.add(btnAltaDeCliente);
-		
 		textField_FNac_DD = new JTextField();
 		textField_FNac_DD.setBounds(151, 227, 32, 20);
 		contentPane.add(textField_FNac_DD);
@@ -202,6 +177,56 @@ public class ViewAltaEmpleado extends JFrame {
 		textField_FNac_YYYY.setColumns(10);
 		textField_FNac_YYYY.setBounds(253, 227, 50, 20);
 		contentPane.add(textField_FNac_YYYY);
+		
+		JLabel lbl_tipo = new JLabel("Tipo de Empleado");
+		lbl_tipo.setBounds(10, 258, 115, 20);
+		contentPane.add(lbl_tipo);
+		
+
+		JLabel lblCantidadDeHoras = new JLabel("Cantidad de horas");
+		lblCantidadDeHoras.setBounds(10, 289, 115, 20);
+		contentPane.add(lblCantidadDeHoras);
+		
+		textField_tipoEmpleado = new JTextField();
+		textField_tipoEmpleado.setColumns(10);
+		textField_tipoEmpleado.setBounds(151, 258, 152, 20);
+		contentPane.add(textField_tipoEmpleado);
+		
+		textField_cantHoras = new JTextField();
+		textField_cantHoras.setColumns(10);
+		textField_cantHoras.setBounds(151, 289, 152, 20);
+		contentPane.add(textField_cantHoras);
+		
+		JButton btnAltaDeCliente = new JButton("Alta de Empleado");
+		btnAltaDeCliente.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (getStub()){
+				try {
+					@SuppressWarnings("deprecation")
+//					Date fNac = new Date(Integer.parseInt(textField_FNac_DD.getText()), Integer.parseInt(textField_FNac_MM.getText()), Integer.parseInt(textField_FNac_YYYY.getText()));
+					Date fNac = new GregorianCalendar(Integer.parseInt(textField_FNac_YYYY.getText()), (Integer.parseInt(textField_FNac_MM.getText()))-1, Integer.parseInt(textField_FNac_DD.getText())).getTime();
+					EmpleadoDTO eDTO = new EmpleadoDTO(
+								//comboBox_Empresa.getSelectedItem().toString(), 
+								textField_Nombre.getText(), 
+								textField_Apellido.getText(),
+								textField_Mail.getText(),
+								textField_DNI.getText(), 
+								textField_Telefono.getText(),
+								fNac,
+								textField_Legajo.getText(),
+								textField_tipoEmpleado.getText(),
+								Integer.parseInt(textField_cantHoras.getText())								
+								);
+						controlPresentismo.agregarEmpleado(eDTO,comboBox_Empresa.getSelectedItem().toString());
+				} catch (RemoteException e1) {
+					e1.printStackTrace();
+				}}
+			}
+		});
+		btnAltaDeCliente.setBounds(241, 330, 139, 20);
+		contentPane.add(btnAltaDeCliente);
+			
+
 		
 	}
 }
