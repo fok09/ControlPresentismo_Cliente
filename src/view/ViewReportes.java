@@ -45,9 +45,6 @@ public class ViewReportes extends JFrame {
 		btnCobrarDelBanco.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				ViewPagoDelBanco pb = new ViewPagoDelBanco();
-				pb.setVisible(true);
-				
 			}
 		});
 		btnCobrarDelBanco.setBounds(136, 187, 134, 63);
