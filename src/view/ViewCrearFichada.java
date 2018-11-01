@@ -115,7 +115,6 @@ public class ViewCrearFichada extends JFrame {
 			for (int i=0; i<clientes.size();i++){
 				comboBox_Empresa.addItem(clientes.get(i).getCuit_cuil());
 			}
-			System.out.println(clientes.size());
 		}
 		
 		JButton btnNewButton = new JButton("Fichar");
@@ -125,7 +124,6 @@ public class ViewCrearFichada extends JFrame {
 					try {
 						LocalDateTime hora = LocalDateTime.now();
 						Date fecha = Calendar.getInstance().getTime();
-						System.out.println("prueba");
 						List<Cliente> clientes;
 						clientes=ClienteSrv.getClientes();
 						Empleado emp= new Empleado();
