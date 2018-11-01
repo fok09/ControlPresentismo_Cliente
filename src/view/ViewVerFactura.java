@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,6 +8,13 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -14,6 +22,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
@@ -42,6 +51,7 @@ public class ViewVerFactura extends JFrame {
 	private JTextField textField_NroFac;
 	private JTextField textField_tipoFactura;
 	private JTextField textField_montoTotal;
+	private JButton btn_Pagar;
 
 	/**
 	 * Launch the application.
@@ -200,20 +210,38 @@ public class ViewVerFactura extends JFrame {
 					Cliente cliente = ClienteSrv.getClienteByCuit(comboBox_CUITCUIL.getSelectedItem().toString());
 					Factura f = FacturaSrv.getFacturaByNro(Integer.parseInt(textField_NroFactura.getText()));
 					
+					if (f == null) {
+						textField_FF_AAAA.setText("");
+						textField_FF_MM.setText("");
+						textField_FF_DD.setText("");
+						textField_tipoFactura.setText("");
+						textField_NroFactura.setText("");
+						textField_NroFac.setText("");
+						textField_montoTotal.setText("");
+						checkBox_pagado.setSelected(false);
+					}
+					
 					textField_Empresa.setText(cliente.getCuit_cuil());
 					textField_NroFac.setText(String.valueOf(f.getNroFactura()));
-					
-					textField_FF_DD.setText(String.valueOf(f.getFecha().getDay()));
-					textField_FF_MM.setText(String.valueOf(f.getFecha().getMonth()));
-					textField_FF_AAAA.setText(String.valueOf(f.getFecha().getYear()));
+					Instant i = f.getFecha().toInstant();
+					ZonedDateTime z = i.atZone(ZoneId.systemDefault());
+					LocalDate fecha = z.toLocalDate();
+					textField_FF_DD.setText(fecha.getDayOfMonth()+"");
+					textField_FF_MM.setText(fecha.getMonthValue()+"");
+					textField_FF_AAAA.setText(fecha.getYear()+"");
 					
 					textField_tipoFactura.setText(f.getTipo());
 					
-					if(f.isPagado())
+					if(f.isPagado()) {
 						checkBox_pagado.setSelected(true);
+						btn_Pagar.setEnabled(false);
+					}
+					
 						
 					textField_montoTotal.setText(String.valueOf(f.getMonto()));
 					}catch (Exception e1) {
+						Component frame = null;
+						JOptionPane.showMessageDialog(frame, "La factura ingresada no existe");
 						e1.printStackTrace();
 					}
 					}
@@ -222,7 +250,7 @@ public class ViewVerFactura extends JFrame {
 		btnBuscar.setBounds(298, 55, 132, 23);
 		contentPane.add(btnBuscar);
 
-		JButton btn_Pagar = new JButton("Pagar");
+		btn_Pagar = new JButton("Facturar");
 		btn_Pagar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (getStub()){
@@ -231,12 +259,14 @@ public class ViewVerFactura extends JFrame {
 						
 						Factura f = FacturaSrv.getFacturaByNro(Integer.parseInt(textField_NroFac.getText()));
 						
+						Date fechaActual = Calendar.getInstance().getTime();
+						
 						FacturaDTO fDTO = new FacturaDTO();
 						fDTO.setCliente(f.getCliente());
 						fDTO.setFecha(f.getFecha());
 						fDTO.setTipo(f.getTipo());
 						fDTO.setContratacion(f.getContratacion());
-						fDTO.setFechaPago(f.getFechaPago());
+						fDTO.setFechaPago(fechaActual);
 						fDTO.setMonto(f.getMonto());
 						fDTO.setNroFactura(f.getNroFactura());
 						fDTO.setPagado(f.isPagado());
