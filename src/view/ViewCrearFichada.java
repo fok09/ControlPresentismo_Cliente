@@ -149,6 +149,7 @@ public class ViewCrearFichada extends JFrame {
 								emp,
 								hora,
 								fecha);
+							textField_Legajo.setText("");
 							controlPresentismo.altaFichada(fDTO);
 						} else {
 							Component frame = null;
