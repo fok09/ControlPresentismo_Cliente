@@ -93,7 +93,10 @@ public class ViewPagoDelBanco extends JFrame {
 		
 		if(getStub()){
 			
-			float monto = ReporteBancoDTO.calcularMonto((Cliente) comboBox_Clientes.getSelectedItem(), LocalDate.now());
+			String cuit = String.valueOf(comboBox_Clientes.getSelectedItem());
+			Cliente cliente = ClienteSrv.getClienteByCuit(cuit);
+			
+			float monto = ReporteBancoDTO.calcularMonto(cliente, LocalDate.now());
 			
 			textField_aCobrar.setText(String.valueOf(monto));
 			
