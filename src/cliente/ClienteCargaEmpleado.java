@@ -29,7 +29,11 @@ public class ClienteCargaEmpleado {
     	if(getStub()) 
     	{
     		try {
+<<<<<<< HEAD
 				carga.cargaEmpleado("2035359183", "5555", "Facundo", "Prueba", "mail", "35359185", "test", "Mensual", 80);
+=======
+				carga.cargaEmpleado("40365856861", "5555", "Facundo", "Prueba", "mail", "35359185", "test");
+>>>>>>> refs/remotes/origin/master
 			} catch (RemoteException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
