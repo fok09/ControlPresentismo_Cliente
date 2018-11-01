@@ -193,6 +193,10 @@ public class ViewAltaClienteJuridico extends JFrame {
 					textField_Domicilio.setText("");
 					textField_Telefono.setText("");
 					textField_Mail.setText("");
+					textField_HE_HH.setText("");
+					textField_HE_MM.setText("");
+					textField_HS_HH.setText("");
+					textField_HS_MM.setText("");
 					
 					controlPresentismo.crearClienteJuridico(pjDTO);
 					

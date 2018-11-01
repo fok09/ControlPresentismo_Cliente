@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,6 +18,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
@@ -86,7 +88,6 @@ public class ViewCrearFichada extends JFrame {
 		lblTipoDeFichada.setBounds(10, 54, 132, 23);
 		contentPane.add(lblTipoDeFichada);
 		
-		System.out.println("pruebacombotipo");
 		JComboBox<String> comboBox_TipoFichada = new JComboBox<String>();
 		comboBox_TipoFichada.setBounds(136, 55, 132, 23);
 		comboBox_TipoFichada.addItem("Entrada");
@@ -105,14 +106,12 @@ public class ViewCrearFichada extends JFrame {
 		JLabel lblEmpresa = new JLabel("Empresa");
 		lblEmpresa.setBounds(10, 11, 108, 23);
 		contentPane.add(lblEmpresa);
-		System.out.println("prueba comboempresa");
 		JComboBox<String> comboBox_Empresa = new JComboBox<String>();
 		comboBox_Empresa.setBounds(136, 12, 132, 22);
 		contentPane.add(comboBox_Empresa);
 		if(getStub()){
 			List<Cliente> clientes;
 			clientes=ClienteSrv.getClientes();
-			System.out.println("prueba comboempresa antes for");
 			for (int i=0; i<clientes.size();i++){
 				comboBox_Empresa.addItem(clientes.get(i).getCuit_cuil());
 			}
@@ -143,12 +142,18 @@ public class ViewCrearFichada extends JFrame {
 						else {
 							tipo="S";
 						}
-						FichadaDTO fDTO = new FichadaDTO(
-							tipo,
-							emp,
-							hora,
-							fecha);
-				controlPresentismo.altaFichada(fDTO);
+						
+						if(emp != null) {
+							FichadaDTO fDTO = new FichadaDTO(
+								tipo,
+								emp,
+								hora,
+								fecha);
+							controlPresentismo.altaFichada(fDTO);
+						} else {
+							Component frame = null;
+							JOptionPane.showMessageDialog(frame, "Empleado inexistente");
+						}
 					} catch (RemoteException e1) {
 					e1.printStackTrace();
 				}
