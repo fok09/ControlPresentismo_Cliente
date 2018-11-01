@@ -217,6 +217,20 @@ public class ViewAltaEmpleado extends JFrame {
 								textField_tipoEmpleado.getText(),
 								Integer.parseInt(textField_cantHoras.getText())								
 								);
+					
+					textField_Nombre.setText("");
+					textField_Apellido.setText("");
+					textField_Mail.setText("");
+					textField_DNI.setText("");
+					textField_Telefono.setText("");
+					textField_Legajo.setText("");
+					textField_tipoEmpleado.setText("");
+					textField_FNac_DD.setText("");
+					textField_FNac_MM.setText("");
+					textField_FNac_YYYY.setText("");
+					textField_cantHoras.setText("");
+					
+					
 						controlPresentismo.agregarEmpleado(eDTO,comboBox_Empresa.getSelectedItem().toString());
 				} catch (RemoteException e1) {
 					e1.printStackTrace();
