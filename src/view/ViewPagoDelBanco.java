@@ -122,11 +122,11 @@ public class ViewPagoDelBanco extends JFrame {
 		
 		
 		JLabel lblMontoACobrar = new JLabel("Monto a cobrar");
-		lblMontoACobrar.setBounds(70, 86, 79, 14);
+		lblMontoACobrar.setBounds(58, 86, 91, 14);
 		contentPane.add(lblMontoACobrar);
 		
 		JLabel label = new JLabel("Empresa");
-		label.setBounds(70, 31, 108, 23);
+		label.setBounds(58, 32, 108, 23);
 		contentPane.add(label);
 		
 		JButton btnEnviar = new JButton("ENVIAR");

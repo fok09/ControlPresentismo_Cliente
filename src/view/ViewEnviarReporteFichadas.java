@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Vector;
 
@@ -17,18 +16,23 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import bean.Cliente;
 import bean.Contratacion;
+import bean.Empleado;
+import bean.Fichada;
 import bean.PersonaJuridica;
+import dto.EmpleadoHorasDTO;
 import interfaces.SistemaPresentismo;
 import srv.ClienteSrv;
 
 public class ViewEnviarReporteFichadas extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTable table;
 	private SistemaPresentismo controlPresentismo;
@@ -39,6 +43,8 @@ public class ViewEnviarReporteFichadas extends JFrame {
 	private Date cFechaInicio;
 	private Date cFechaFin;
 	private JLabel lblCuitcuil;
+	private List<EmpleadoHorasDTO> empleadoHoras;
+
 	
 	/**
 	 * Launch the application.
@@ -192,22 +198,36 @@ public class ViewEnviarReporteFichadas extends JFrame {
 			public void actionPerformed(ActionEvent arg0)
 			{
 				if (getStub()) {
-					try {
-						Contratacion cont = new Contratacion();
-						String cuit = (String) comboBox_Empresa.getSelectedItem();
-						String seleccion = comboBox_Contratacion.getSelectedItem().toString();
-						int cod = Integer.parseInt(seleccion.substring(0,seleccion.indexOf(" ")));
-						for (Contratacion c : contrataciones ) {
-							if (c.getId()==cod) {
-								cont = c;
-							}
+					Contratacion cont = new Contratacion();
+					String cuit = (String) comboBox_Empresa.getSelectedItem();
+					String seleccion = comboBox_Contratacion.getSelectedItem().toString();
+					Vector<Vector<String>> dt = new Vector<Vector<String>>();
+					
+					int cod = Integer.parseInt(seleccion.substring(0,seleccion.indexOf(" ")));
+					cuit = cuit.substring(0,cuit.indexOf(" "));
+					for (Contratacion c : contrataciones ) {
+						if (c.getId()==cod) {
+							cont = c;
 						}
-						
-						datosTabla = controlPresentismo.getHorasTrabajadasTotales(cuit,cFechaInicio,cFechaFin, cont);
-						actualizarTabla();
+					}
+					
+					try {
+						empleadoHoras = controlPresentismo.getHorasTrabajadasTotalesLiqui(cuit,cFechaInicio,cFechaFin);
 					} catch (RemoteException e1) {
+						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
+					
+					for (EmpleadoHorasDTO e : empleadoHoras) {
+						Vector<String> strs = new Vector<String>();
+						strs.add(String.valueOf(e.getLegajo()));
+						strs.add(String.valueOf(e.getApellido() + " " + e.getNombre()));
+						strs.add(String.valueOf(e.getHorasTrabajadas()));
+						strs.add(String.valueOf(e.getHorasAusentes()));
+						dt.add(strs);
+					}
+					datosTabla = dt;
+					actualizarTabla();
 					}
 			}
 		});
@@ -233,12 +253,18 @@ public class ViewEnviarReporteFichadas extends JFrame {
 		JButton btnNewButton = new JButton("Enviar");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
 				if (comboBox_Destinatario.getSelectedItem().toString().equals("Gimnasio")){
-					//Agregar Integracion con Gym
+					controlPresentismo.enviarHorasTotales(empleadoHoras, false);
 				}
 				if (comboBox_Destinatario.getSelectedItem().toString().equals("Liquidacion de Sueldos")){
-					//Agregar PostLiquidacion
-				}
+					
+						controlPresentismo.enviarHorasTotales(empleadoHoras, true);
+					} }catch (RemoteException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				
 			}
 		});
 		btnNewButton.setBounds(423, 379, 112, 23);
