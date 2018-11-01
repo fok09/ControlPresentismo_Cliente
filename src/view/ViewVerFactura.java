@@ -20,6 +20,8 @@ import javax.swing.border.EmptyBorder;
 
 import bean.Cliente;
 import bean.Factura;
+import dto.ClienteDTO;
+import dto.FacturaDTO;
 import interfaces.SistemaPresentismo;
 import srv.ClienteSrv;
 import srv.FacturaSrv;
@@ -89,8 +91,6 @@ public class ViewVerFactura extends JFrame {
 		labelNroFactura.setBounds(10, 54, 132, 23);
 		contentPane.add(labelNroFactura);
 		
-		System.out.println("pruebacombotipo");
-		
 		JLabel lblCantHoras = new JLabel("CUIT / CUIL");
 		lblCantHoras.setBounds(10, 97, 132, 23);
 		contentPane.add(lblCantHoras);
@@ -104,7 +104,6 @@ public class ViewVerFactura extends JFrame {
 		JLabel lblEmpresa = new JLabel("Empresa");
 		lblEmpresa.setBounds(10, 11, 108, 23);
 		contentPane.add(lblEmpresa);
-		System.out.println("prueba comboempresa");
 		
 		JComboBox<String> comboBox_CUITCUIL = new JComboBox<String>();
 		comboBox_CUITCUIL.setBounds(136, 12, 132, 22);
@@ -115,9 +114,7 @@ public class ViewVerFactura extends JFrame {
 		for (int i=0; i<clientes.size();i++){
 			comboBox_CUITCUIL.addItem(clientes.get(i).getCuit_cuil());
 		}
-	
-			System.out.println(clientes.size());
-			
+				
 		contentPane.add(comboBox_CUITCUIL);
 		
 		JLabel lblNumFact = new JLabel("Numero de Factura");
@@ -199,7 +196,7 @@ public class ViewVerFactura extends JFrame {
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {			
 				if (getStub()){
-				
+					try {
 					Cliente cliente = ClienteSrv.getClienteByCuit(comboBox_CUITCUIL.getSelectedItem().toString());
 					Factura f = FacturaSrv.getFacturaByNro(Integer.parseInt(textField_NroFactura.getText()));
 					
@@ -216,10 +213,12 @@ public class ViewVerFactura extends JFrame {
 						checkBox_pagado.setSelected(true);
 						
 					textField_montoTotal.setText(String.valueOf(f.getMonto()));
+					}catch (Exception e1) {
+						e1.printStackTrace();
 					}
-				
-			}
-		});
+					}
+				}
+			});
 		btnBuscar.setBounds(298, 55, 132, 23);
 		contentPane.add(btnBuscar);
 
@@ -228,21 +227,29 @@ public class ViewVerFactura extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (getStub()){
 					try {
-						Cliente cliente = ClienteSrv.getClienteByCuit(textField_Empresa.getText());
+						ClienteSrv.getClienteByCuit(textField_Empresa.getText());
+						
 						Factura f = FacturaSrv.getFacturaByNro(Integer.parseInt(textField_NroFac.getText()));
-				
-						controlPresentismo.registrarPago(f.getNroFactura());
+						
+						FacturaDTO fDTO = new FacturaDTO();
+						fDTO.setCliente(f.getCliente());
+						fDTO.setFecha(f.getFecha());
+						fDTO.setTipo(f.getTipo());
+						fDTO.setContratacion(f.getContratacion());
+						fDTO.setFechaPago(f.getFechaPago());
+						fDTO.setMonto(f.getMonto());
+						fDTO.setNroFactura(f.getNroFactura());
+						fDTO.setPagado(f.isPagado());
+						fDTO.setPagado(true);
 					
-					
+						controlPresentismo.registrarPago(fDTO);
+						
 						checkBox_pagado.setSelected(true);
-					
-						FacturaSrv.grabarFactura(f);
 					
 					} catch (RemoteException e1) {
 	
 						e1.printStackTrace();
 					}
-				
 				}
 			}
 		});
