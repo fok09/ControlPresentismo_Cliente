@@ -64,7 +64,7 @@ public class ViewEliminarEmpleado extends JFrame {
 
 
 	public ViewEliminarEmpleado() {
-		setTitle("Cobro a Banco");
+		setTitle("Eliminar Empleado");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -98,14 +98,19 @@ public class ViewEliminarEmpleado extends JFrame {
 		lblApellido.setBounds(58, 68, 97, 14);
 		contentPane.add(lblApellido);
 		
-		JComboBox<String> comboBox_Empleados = new JComboBox<String>();
+		JComboBox<Empleado> comboBox_Empleados = new JComboBox<Empleado>();
+		if(getStub()){
+			List<Empleado> empleados;
+			empleados=EmpleadoSrv.getEmpleados();
+			for (Empleado e: empleados){
+				comboBox_Empleados.addItem(e);
+			}
+		}
 		comboBox_Empleados.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				if(getStub()){
-					
-					String dni = String.valueOf(comboBox_Empleados.getSelectedItem());
-					Empleado empleado = EmpleadoSrv.getEmpleadoByDni(Integer.parseInt(dni));
+					Empleado empleado = (Empleado)comboBox_Empleados.getSelectedItem();
 
 					textField_Apellido.setText(empleado.getApellido());
 					textField_Nombre.setText(empleado.getNombre());
@@ -116,19 +121,12 @@ public class ViewEliminarEmpleado extends JFrame {
 		comboBox_Empleados.setBounds(196, 32, 132, 22);
 		contentPane.add(comboBox_Empleados);
 		
-		if(getStub()){
-			List<Empleado> empleados;
-			empleados=EmpleadoSrv.getEmpleados();
-			for (int i=0; i<empleados.size();i++){
-				comboBox_Empleados.addItem(String.valueOf(empleados.get(i).getDni()));
-			}
-		}
+
 		
 		
 		if(getStub()){
 			
-			String dni = String.valueOf(comboBox_Empleados.getSelectedItem());
-			Empleado empleado = EmpleadoSrv.getEmpleadoByDni(Integer.parseInt(dni));
+			Empleado empleado = (Empleado)comboBox_Empleados.getSelectedItem();
 
 			textField_Apellido.setText(empleado.getApellido());
 			textField_Nombre.setText(empleado.getNombre());
@@ -144,8 +142,8 @@ public class ViewEliminarEmpleado extends JFrame {
 		btnEliminarEmpleado.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				String idEmpleado = String.valueOf(comboBox_Empleados.getSelectedItem());
-				Empleado empleado = EmpleadoSrv.getEmpleado(Integer.parseInt(idEmpleado));
+				Empleado empleado = (Empleado)comboBox_Empleados.getSelectedItem();
+
 				
 				EmpleadoSrv.eliminarEmpleado(empleado);
 				
