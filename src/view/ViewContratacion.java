@@ -28,6 +28,7 @@ import dto.FichadaDTO;
 import interfaces.SistemaPresentismo;
 import srv.ClienteSrv;
 import srv.ContratacionSrv;
+import srv.FacturaSrv;
 import srv.ServicioSrv;
 
 public class ViewContratacion extends JFrame {
@@ -46,6 +47,7 @@ public class ViewContratacion extends JFrame {
 	private JTextField textField_FF_MM;
 	private JTextField textField_FF_AAAA;
 	private JTextField textField_CantEmp;
+	private JTextField textField_NuevaFact;
 
 	/**
 	 * Launch the application.
@@ -85,7 +87,7 @@ public class ViewContratacion extends JFrame {
 			}
 		});
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 372, 337);
+		setBounds(100, 100, 372, 339);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -95,8 +97,12 @@ public class ViewContratacion extends JFrame {
 		labelEmpresa.setBounds(10, 54, 132, 23);
 		contentPane.add(labelEmpresa);
 		
+<<<<<<< HEAD
 		System.out.println("pruebacombotipo");
 		JComboBox<Cliente> comboBox_Empresa = new JComboBox<Cliente>();
+=======
+		JComboBox<String> comboBox_Empresa = new JComboBox<String>();
+>>>>>>> refs/remotes/origin/master
 		comboBox_Empresa.setBounds(136, 55, 132, 23);
 		if(getStub()){
 			List<Cliente> clientes;
@@ -120,8 +126,7 @@ public class ViewContratacion extends JFrame {
 		JLabel lblEmpresa = new JLabel("Servicio");
 		lblEmpresa.setBounds(10, 11, 108, 23);
 		contentPane.add(lblEmpresa);
-		System.out.println("prueba comboempresa");
-		
+				
 		JComboBox<String> comboBox_Servicio = new JComboBox<String>();
 		comboBox_Servicio.setBounds(136, 12, 132, 22);
 		if(getStub()){
@@ -208,8 +213,7 @@ public class ViewContratacion extends JFrame {
 		textField_CantEmp.setColumns(10);
 		textField_CantEmp.setBounds(136, 230, 132, 23);
 		contentPane.add(textField_CantEmp);
-		
-		
+
 		JButton btnNewButton = new JButton("Generar Contratacion");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -243,7 +247,7 @@ public class ViewContratacion extends JFrame {
 						textField_CantEmp.setText("");
 						textField_CantHoras.setText("");
 				controlPresentismo.crearContratacion(cDTO);
-					} catch (RemoteException e1) {
+				} catch (RemoteException e1) {
 					e1.printStackTrace();
 				}
 			}
@@ -251,7 +255,6 @@ public class ViewContratacion extends JFrame {
 		});
 		btnNewButton.setBounds(174, 264, 172, 23);
 		contentPane.add(btnNewButton);
-		
 		
 	}
 }
