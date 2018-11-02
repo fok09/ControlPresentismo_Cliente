@@ -254,6 +254,8 @@ public class ViewContratacion extends JFrame {
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				dispose();
 			}
 		});
 		btnVolver.setBounds(241, 298, 105, 23);

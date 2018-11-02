@@ -151,6 +151,8 @@ public class ViewPagoDelBanco extends JFrame {
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				dispose();
 			}
 		});
 		btnVolver.setBounds(175, 264, 89, 23);
