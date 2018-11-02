@@ -39,7 +39,7 @@ public class ViewAdministracion extends JFrame {
 	public ViewAdministracion() {
 		setTitle("Administracion de Clientes");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 470, 288);
+		setBounds(100, 100, 470, 298);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -62,7 +62,7 @@ public class ViewAdministracion extends JFrame {
 				altaEmpleado.setVisible(true);
 			}
 		});
-		btnNewButton_3.setBounds(25, 152, 186, 36);
+		btnNewButton_3.setBounds(25, 209, 186, 36);
 		contentPane.add(btnNewButton_3);
 		
 		JButton btnNewButton_Contratacion = new JButton("Contratacion");
@@ -94,7 +94,7 @@ public class ViewAdministracion extends JFrame {
 				
 			}
 		});
-		btnNewButton_6.setBounds(238, 152, 186, 36);
+		btnNewButton_6.setBounds(238, 151, 186, 36);
 		contentPane.add(btnNewButton_6);
 		
 		JButton btnAltaDePersona = new JButton("Alta de Persona Juridica");
@@ -106,5 +106,15 @@ public class ViewAdministracion extends JFrame {
 		});
 		btnAltaDePersona.setBounds(25, 94, 186, 36);
 		contentPane.add(btnAltaDePersona);
+		
+		JButton btnEliminarCliente = new JButton("Eliminar Cliente");
+		btnEliminarCliente.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ViewEliminarCliente eliminarCliente = new ViewEliminarCliente();
+				eliminarCliente.setVisible(true);
+			}
+		});
+		btnEliminarCliente.setBounds(25, 151, 186, 36);
+		contentPane.add(btnEliminarCliente);
 	}
 }
