@@ -96,13 +96,8 @@ public class ViewContratacion extends JFrame {
 		JLabel labelEmpresa = new JLabel("Empresa");
 		labelEmpresa.setBounds(10, 54, 132, 23);
 		contentPane.add(labelEmpresa);
-		
-<<<<<<< HEAD
-		System.out.println("pruebacombotipo");
+
 		JComboBox<Cliente> comboBox_Empresa = new JComboBox<Cliente>();
-=======
-		JComboBox<String> comboBox_Empresa = new JComboBox<String>();
->>>>>>> refs/remotes/origin/master
 		comboBox_Empresa.setBounds(136, 55, 132, 23);
 		if(getStub()){
 			List<Cliente> clientes;
