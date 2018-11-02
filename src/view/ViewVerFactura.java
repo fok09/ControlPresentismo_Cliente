@@ -294,11 +294,6 @@ public class ViewVerFactura extends JFrame {
 
 						checkBox_pagado.setSelected(true);
 						
-						if (f.isPagado()) {
-							checkBox_pagado.setSelected(true);
-							btn_Pagar.setEnabled(false);
-						}
-
 					} catch (RemoteException e1) {
 
 						e1.printStackTrace();

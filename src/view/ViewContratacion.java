@@ -98,7 +98,7 @@ public class ViewContratacion extends JFrame {
 		contentPane.add(labelEmpresa);
 
 		JComboBox<Cliente> comboBox_Empresa = new JComboBox<Cliente>();
-		comboBox_Empresa.setBounds(136, 55, 132, 23);
+		comboBox_Empresa.setBounds(136, 55, 210, 23);
 		if(getStub()){
 			List<Cliente> clientes;
 			clientes=ClienteSrv.getClientes();
@@ -123,7 +123,7 @@ public class ViewContratacion extends JFrame {
 		contentPane.add(lblEmpresa);
 				
 		JComboBox<String> comboBox_Servicio = new JComboBox<String>();
-		comboBox_Servicio.setBounds(136, 12, 132, 22);
+		comboBox_Servicio.setBounds(136, 12, 210, 22);
 		if(getStub()){
 			List<Servicio> servicios;
 			servicios=ServicioSrv.getServicios();

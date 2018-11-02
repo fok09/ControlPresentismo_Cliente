@@ -75,14 +75,14 @@ public class ViewEliminarEmpleado extends JFrame {
 		
 		textField_Apellido = new JTextField();
 		textField_Apellido.setEditable(false);
-		textField_Apellido.setBounds(196, 65, 132, 20);
+		textField_Apellido.setBounds(141, 65, 132, 20);
 		contentPane.add(textField_Apellido);
 		textField_Apellido.setColumns(10);
 		
 		textField_Nombre = new JTextField();
 		textField_Nombre.setEditable(false);
 		textField_Nombre.setColumns(10);
-		textField_Nombre.setBounds(196, 96, 132, 20);
+		textField_Nombre.setBounds(141, 99, 132, 20);
 		contentPane.add(textField_Nombre);
 		
 		textField_estado = new JTextField();
@@ -118,7 +118,7 @@ public class ViewEliminarEmpleado extends JFrame {
 				
 			}
 		});
-		comboBox_Empleados.setBounds(196, 32, 132, 22);
+		comboBox_Empleados.setBounds(141, 32, 211, 22);
 		contentPane.add(comboBox_Empleados);
 		
 
@@ -133,7 +133,7 @@ public class ViewEliminarEmpleado extends JFrame {
 		
 		}
 		
-		JLabel lblEmpleado = new JLabel("Dni del empleado");
+		JLabel lblEmpleado = new JLabel("Empleado");
 		lblEmpleado.setBounds(58, 32, 128, 23);
 		contentPane.add(lblEmpleado);
 	
@@ -152,7 +152,7 @@ public class ViewEliminarEmpleado extends JFrame {
 			}
 		});
 		btnEliminarEmpleado.setFont(new Font("Showcard Gothic", Font.PLAIN, 15));
-		btnEliminarEmpleado.setBounds(101, 134, 204, 67);
+		btnEliminarEmpleado.setBounds(118, 141, 204, 67);
 		contentPane.add(btnEliminarEmpleado);
 		
 		JButton btnAtras = new JButton("Volver");

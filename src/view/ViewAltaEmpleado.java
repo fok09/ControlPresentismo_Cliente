@@ -131,7 +131,7 @@ public class ViewAltaEmpleado extends JFrame {
 		contentPane.add(lblEmpresa);
 		
 		JComboBox<Cliente> comboBox_Empresa = new JComboBox<Cliente>();
-		comboBox_Empresa.setBounds(151, 11, 152, 20);
+		comboBox_Empresa.setBounds(151, 11, 237, 20);
 		if(getStub()){
 			List<Cliente> clientes;
 			clientes=ClienteSrv.getClientes();
