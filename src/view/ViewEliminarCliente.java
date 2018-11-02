@@ -164,7 +164,10 @@ public class ViewEliminarCliente extends JFrame {
 		btnAtras.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				System.exit(0);
+				ViewAdministracion a = new ViewAdministracion();
+				a.setVisible(true);
+				
+				dispose();
 			}
 		});
 		btnAtras.setBounds(318, 227, 89, 23);
