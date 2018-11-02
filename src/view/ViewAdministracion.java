@@ -112,6 +112,8 @@ public class ViewAdministracion extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				ViewEliminarCliente eliminarCliente = new ViewEliminarCliente();
 				eliminarCliente.setVisible(true);
+				
+				dispose();
 			}
 		});
 		btnEliminarCliente.setBounds(25, 151, 186, 36);
