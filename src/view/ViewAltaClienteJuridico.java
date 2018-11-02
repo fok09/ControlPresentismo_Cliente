@@ -71,7 +71,7 @@ public class ViewAltaClienteJuridico extends JFrame {
 	public ViewAltaClienteJuridico() {
 		setTitle("Alta de Persona Juridica");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 384, 331);
+		setBounds(100, 100, 384, 370);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -206,7 +206,7 @@ public class ViewAltaClienteJuridico extends JFrame {
 				}
 			}
 		});
-		btnAltaDeCliente.setBounds(215, 261, 139, 20);
+		btnAltaDeCliente.setBounds(215, 261, 139, 23);
 		contentPane.add(btnAltaDeCliente);
 		
 		JLabel labelCBU = new JLabel("CBU");
@@ -217,6 +217,14 @@ public class ViewAltaClienteJuridico extends JFrame {
 		textField_CBU.setColumns(10);
 		textField_CBU.setBounds(151, 44, 152, 20);
 		contentPane.add(textField_CBU);
+		
+		JButton btnVolver = new JButton("Volver");
+		btnVolver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnVolver.setBounds(247, 297, 107, 23);
+		contentPane.add(btnVolver);
 	}
 
 }

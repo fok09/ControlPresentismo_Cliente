@@ -75,7 +75,7 @@ public class ViewAltaEmpleado extends JFrame {
 	public ViewAltaEmpleado() {
 		setTitle("Alta de Empleado");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 414, 414);
+		setBounds(100, 100, 414, 433);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -239,8 +239,16 @@ public class ViewAltaEmpleado extends JFrame {
 				}}
 			}
 		});
-		btnAltaDeCliente.setBounds(241, 330, 139, 20);
+		btnAltaDeCliente.setBounds(241, 327, 139, 23);
 		contentPane.add(btnAltaDeCliente);
+		
+		JButton btnVolver = new JButton("Volver");
+		btnVolver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnVolver.setBounds(280, 361, 100, 23);
+		contentPane.add(btnVolver);
 			
 
 		

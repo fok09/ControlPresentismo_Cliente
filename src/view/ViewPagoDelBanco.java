@@ -66,7 +66,7 @@ public class ViewPagoDelBanco extends JFrame {
 	public ViewPagoDelBanco() {
 		setTitle("Cobro a Banco");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 450, 337);
 		contentPane = new JPanel();
 		contentPane.setToolTipText("");
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -147,6 +147,14 @@ public class ViewPagoDelBanco extends JFrame {
 		JLabel label_1 = new JLabel("$");
 		label_1.setBounds(179, 83, 16, 20);
 		contentPane.add(label_1);
+		
+		JButton btnVolver = new JButton("Volver");
+		btnVolver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnVolver.setBounds(175, 264, 89, 23);
+		contentPane.add(btnVolver);
 		
 
 	}

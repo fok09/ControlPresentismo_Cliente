@@ -72,7 +72,7 @@ public class ViewAltaClienteFisico extends JFrame {
 	public ViewAltaClienteFisico() {
 		setTitle("Alta de Persona Fisica");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 384, 358);
+		setBounds(100, 100, 391, 396);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -208,7 +208,7 @@ public class ViewAltaClienteFisico extends JFrame {
 				}
 			}
 		});
-		btnAltaDeCliente.setBounds(225, 288, 139, 20);
+		btnAltaDeCliente.setBounds(225, 292, 139, 23);
 		contentPane.add(btnAltaDeCliente);
 		
 		JLabel lblApellido = new JLabel("Apellido");
@@ -228,5 +228,13 @@ public class ViewAltaClienteFisico extends JFrame {
 		textField_CBU.setColumns(10);
 		textField_CBU.setBounds(151, 42, 152, 20);
 		contentPane.add(textField_CBU);
+		
+		JButton btnVolver = new JButton("Volver");
+		btnVolver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnVolver.setBounds(260, 323, 104, 23);
+		contentPane.add(btnVolver);
 	}
 }

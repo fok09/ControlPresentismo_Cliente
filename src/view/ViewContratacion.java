@@ -87,7 +87,7 @@ public class ViewContratacion extends JFrame {
 			}
 		});
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 372, 339);
+		setBounds(100, 100, 372, 372);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -250,6 +250,14 @@ public class ViewContratacion extends JFrame {
 		});
 		btnNewButton.setBounds(174, 264, 172, 23);
 		contentPane.add(btnNewButton);
+		
+		JButton btnVolver = new JButton("Volver");
+		btnVolver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnVolver.setBounds(241, 298, 105, 23);
+		contentPane.add(btnVolver);
 		
 	}
 }
