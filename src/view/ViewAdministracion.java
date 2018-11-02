@@ -128,5 +128,18 @@ public class ViewAdministracion extends JFrame {
 		});
 		btnVolver.setBounds(323, 269, 121, 35);
 		contentPane.add(btnVolver);
+		
+		JButton button = new JButton("Eliminar Empleado");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ViewEliminarEmpleado ee = new ViewEliminarEmpleado();
+				ee.setVisible(true);
+				
+				dispose();
+				
+			}
+		});
+		button.setBounds(238, 209, 186, 36);
+		contentPane.add(button);
 	}
 }
