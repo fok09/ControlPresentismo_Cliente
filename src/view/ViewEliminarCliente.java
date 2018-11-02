@@ -102,14 +102,14 @@ public class ViewEliminarCliente extends JFrame {
 		lblDomicilio.setBounds(58, 68, 97, 14);
 		contentPane.add(lblDomicilio);
 		
-		JComboBox<String> comboBox_Clientes = new JComboBox<String>();
+		JComboBox<Cliente> comboBox_Clientes = new JComboBox<Cliente>();
 		comboBox_Clientes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				if(getStub()){
 					
-					String cuit = String.valueOf(comboBox_Clientes.getSelectedItem());
-					Cliente cliente = ClienteSrv.getClienteByCuit(cuit);
+
+					Cliente cliente = (Cliente)comboBox_Clientes.getSelectedItem();
 
 					textField_Domicilio.setText(cliente.getDomicilio());
 					textField_CBU.setText(cliente.getCbu());
@@ -123,16 +123,15 @@ public class ViewEliminarCliente extends JFrame {
 		if(getStub()){
 			List<Cliente> clientes;
 			clientes=ClienteSrv.getClientes();
-			for (int i=0; i<clientes.size();i++){
-				comboBox_Clientes.addItem(clientes.get(i).getCuit_cuil());
+			for (Cliente c: clientes){
+				comboBox_Clientes.addItem(c);
 			}
 		}
 		
 		
 		if(getStub()){
 			
-			String cuit = String.valueOf(comboBox_Clientes.getSelectedItem());
-			Cliente cliente = ClienteSrv.getClienteByCuit(cuit);
+			Cliente cliente = (Cliente)comboBox_Clientes.getSelectedItem();
 			
 			textField_Domicilio.setText(cliente.getDomicilio());
 			textField_CBU.setText(cliente.getCbu());
@@ -147,8 +146,8 @@ public class ViewEliminarCliente extends JFrame {
 		JButton btnEliminarCliente = new JButton("Eliminar Cliente");
 		btnEliminarCliente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String cuit = String.valueOf(comboBox_Clientes.getSelectedItem());
-				Cliente cliente = ClienteSrv.getClienteByCuit(cuit);
+
+				Cliente cliente = (Cliente)comboBox_Clientes.getSelectedItem();
 				
 				ClienteSrv.eliminarCliente(cliente);
 				
