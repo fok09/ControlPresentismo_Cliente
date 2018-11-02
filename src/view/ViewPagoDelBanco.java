@@ -73,7 +73,29 @@ public class ViewPagoDelBanco extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		textField_aCobrar = new JTextField();
+		textField_aCobrar.setEditable(false);
+		textField_aCobrar.setBounds(196, 83, 132, 20);
+		contentPane.add(textField_aCobrar);
+		textField_aCobrar.setColumns(10);
+		
 		JComboBox<String> comboBox_Clientes = new JComboBox<String>();
+		comboBox_Clientes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if(getStub()){
+					
+					String cuit = String.valueOf(comboBox_Clientes.getSelectedItem());
+					Cliente cliente = ClienteSrv.getClienteByCuit(cuit);
+					
+					float monto = ReporteBancoDTO.calcularMonto(cliente, LocalDate.now());
+					
+					textField_aCobrar.setText(String.valueOf(monto));
+					
+				}
+				
+			}
+		});
 		comboBox_Clientes.setBounds(196, 32, 132, 22);
 		contentPane.add(comboBox_Clientes);
 		
@@ -85,11 +107,6 @@ public class ViewPagoDelBanco extends JFrame {
 			}
 		}
 		
-		textField_aCobrar = new JTextField();
-		textField_aCobrar.setEditable(false);
-		textField_aCobrar.setBounds(196, 83, 132, 20);
-		contentPane.add(textField_aCobrar);
-		textField_aCobrar.setColumns(10);
 		
 		if(getStub()){
 			

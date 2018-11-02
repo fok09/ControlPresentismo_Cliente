@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Vector;
 
@@ -17,18 +16,24 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import bean.Cliente;
 import bean.Contratacion;
+import bean.Empleado;
+import bean.Fichada;
 import bean.PersonaJuridica;
+import dto.EmpleadoHorasDTO;
 import interfaces.SistemaPresentismo;
 import srv.ClienteSrv;
 
 public class ViewEnviarReporteFichadas extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTable table;
 	private SistemaPresentismo controlPresentismo;
@@ -36,9 +41,10 @@ public class ViewEnviarReporteFichadas extends JFrame {
 	private Vector<Vector<String>> datosTabla;
 	private Vector<String> columnNames;
 	private List<Contratacion> contrataciones;
-	private Date cFechaInicio;
-	private Date cFechaFin;
 	private JLabel lblCuitcuil;
+	private List<EmpleadoHorasDTO> empleadoHoras;
+	JComboBox<Contratacion> comboBox_Contratacion;
+
 	
 	/**
 	 * Launch the application.
@@ -133,39 +139,36 @@ public class ViewEnviarReporteFichadas extends JFrame {
 		contentPane.add(scrollPane);
 		contentPane.add(lblCuitcuil);
 		
-		JComboBox comboBox_Contratacion = new JComboBox();
-		comboBox_Contratacion.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String seleccion = comboBox_Contratacion.getSelectedItem().toString();
-				int cod = Integer.parseInt(seleccion.substring(0,seleccion.indexOf(" ")));
-				for (Contratacion c : contrataciones ) {
-					if (c.getId()==cod) {
-						cFechaInicio = c.getFechaInicial();
-						cFechaFin = c.getFechaFinal();
-					}
-				}
-	
-				
-			}
-		});
+		comboBox_Contratacion = new JComboBox<Contratacion>();
 		comboBox_Contratacion.setBounds(131, 50, 362, 21);
 		contentPane.add(comboBox_Contratacion);
 		
-		JComboBox comboBox_Empresa = new JComboBox();
+		JComboBox<Cliente> comboBox_Empresa = new JComboBox<Cliente>();
+		
+		List<Cliente> listaClientes;
+		listaClientes=ClienteSrv.getClientes();
+		
+		for(Cliente c: listaClientes) {
+			comboBox_Empresa.addItem(c);
+		}
+		
 		comboBox_Empresa.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
 			{
 				if (getStub()) {
 					
 					try {
-						String cuitEmpresa = (String) comboBox_Empresa.getSelectedItem().toString();
-						cuitEmpresa = cuitEmpresa.substring(0,cuitEmpresa.indexOf(" "));
+						Cliente cliente = (Cliente) comboBox_Empresa.getSelectedItem();
 						
-						contrataciones = controlPresentismo.getContratacionesCliente(cuitEmpresa);
-						comboBox_Contratacion.removeAllItems();
+						contrataciones = controlPresentismo.getContratacionesCliente(cliente);
+//						comboBox_Contratacion = new JComboBox<Contratacion>();
+						if(comboBox_Contratacion.getItemCount() > 0)
+							comboBox_Contratacion.removeAllItems();
 						for (Contratacion c : contrataciones){
-							comboBox_Contratacion.addItem(c.getId() + " " + c.getServicio().getNombre() + " - " + c.getFechaInicial() + " a " + c.getFechaFinal());							
+							System.out.println(c.getId());							
+							comboBox_Contratacion.addItem(c);
 						}
+					
 					} catch (RemoteException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -175,13 +178,13 @@ public class ViewEnviarReporteFichadas extends JFrame {
 			}
 			
 		});
-		if(getStub()){
-			List<PersonaJuridica> clientesPJ;
-			clientesPJ=ClienteSrv.getClientesJuridicos();
-			for (int i=0; i<clientesPJ.size();i++){
-				comboBox_Empresa.addItem(clientesPJ.get(i).getCuit_cuil().toString() + " - " + clientesPJ.get(i).getRazonSocial());
-			}
-		}
+//		if(getStub()){
+//			List<PersonaJuridica> clientesPJ;
+//			clientesPJ=ClienteSrv.getClientesJuridicos();
+//			for (int i=0; i<clientesPJ.size();i++){
+//				comboBox_Empresa.addItem(clientesPJ.get(i).getCuit_cuil().toString() + " - " + clientesPJ.get(i).getRazonSocial());
+//			}
+//		}
 		comboBox_Empresa.setBounds(131, 17, 362, 21);
 		contentPane.add(comboBox_Empresa);
 		
@@ -192,22 +195,28 @@ public class ViewEnviarReporteFichadas extends JFrame {
 			public void actionPerformed(ActionEvent arg0)
 			{
 				if (getStub()) {
+					Contratacion cont = ((Contratacion)comboBox_Contratacion.getSelectedItem());
+					String cuit = ((Cliente)comboBox_Empresa.getSelectedItem()).getCuit_cuil();
+					Vector<Vector<String>> dt = new Vector<Vector<String>>();
+
+					
 					try {
-						Contratacion cont = new Contratacion();
-						String cuit = (String) comboBox_Empresa.getSelectedItem();
-						String seleccion = comboBox_Contratacion.getSelectedItem().toString();
-						int cod = Integer.parseInt(seleccion.substring(0,seleccion.indexOf(" ")));
-						for (Contratacion c : contrataciones ) {
-							if (c.getId()==cod) {
-								cont = c;
-							}
-						}
-						
-						datosTabla = controlPresentismo.getHorasTrabajadasTotales(cuit,cFechaInicio,cFechaFin, cont);
-						actualizarTabla();
+						empleadoHoras = controlPresentismo.getHorasTrabajadasTotalesLiqui(cuit,cont.getFechaInicial(),cont.getFechaFinal());
 					} catch (RemoteException e1) {
+						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
+					
+					for (EmpleadoHorasDTO e : empleadoHoras) {
+						Vector<String> strs = new Vector<String>();
+						strs.add(String.valueOf(e.getLegajo()));
+						strs.add(String.valueOf(e.getApellido() + " " + e.getNombre()));
+						strs.add(String.valueOf(e.getHorasTrabajadas()));
+						strs.add(String.valueOf(e.getHorasAusentes()));
+						dt.add(strs);
+					}
+					datosTabla = dt;
+					actualizarTabla();
 					}
 			}
 		});
@@ -233,12 +242,18 @@ public class ViewEnviarReporteFichadas extends JFrame {
 		JButton btnNewButton = new JButton("Enviar");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
 				if (comboBox_Destinatario.getSelectedItem().toString().equals("Gimnasio")){
-					//Agregar Integracion con Gym
+					controlPresentismo.enviarHorasTotales(empleadoHoras, false);
 				}
 				if (comboBox_Destinatario.getSelectedItem().toString().equals("Liquidacion de Sueldos")){
-					//Agregar PostLiquidacion
-				}
+					
+						controlPresentismo.enviarHorasTotales(empleadoHoras, true);
+					} }catch (RemoteException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				
 			}
 		});
 		btnNewButton.setBounds(423, 379, 112, 23);

@@ -232,6 +232,15 @@ public class ViewContratacion extends JFrame {
 						comboBox_TipoFactura.getSelectedItem().toString(),
 						sv.getMonto()						
 						);
+						
+						textField_FI_DD.setText("");
+						textField_FI_MM.setText("");
+						textField_FI_AAAA.setText("");
+						textField_FF_DD.setText("");
+						textField_FF_MM.setText("");
+						textField_FF_AAAA.setText("");
+						textField_CantEmp.setText("");
+						textField_CantHoras.setText("");
 				controlPresentismo.crearContratacion(cDTO);
 				} catch (RemoteException e1) {
 					e1.printStackTrace();

@@ -16,6 +16,7 @@ import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -29,6 +30,8 @@ import javax.swing.border.EmptyBorder;
 
 import bean.Cliente;
 import bean.Factura;
+import bean.PersonaFisica;
+import bean.PersonaJuridica;
 import dto.ClienteDTO;
 import dto.FacturaDTO;
 import interfaces.SistemaPresentismo;
@@ -91,7 +94,7 @@ public class ViewVerFactura extends JFrame {
 			}
 		});
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 456, 383);
+		setBounds(100, 100, 555, 383);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -115,15 +118,38 @@ public class ViewVerFactura extends JFrame {
 		lblEmpresa.setBounds(10, 11, 108, 23);
 		contentPane.add(lblEmpresa);
 		
-		JComboBox<String> comboBox_CUITCUIL = new JComboBox<String>();
-		comboBox_CUITCUIL.setBounds(136, 12, 132, 22);
+		JComboBox<Cliente> comboBox_CUITCUIL = new JComboBox<Cliente>();
+		comboBox_CUITCUIL.setBounds(136, 12, 294, 22);
 		
-		List<Cliente> clientes;
-		clientes=ClienteSrv.getClientes();
+//		List<PersonaFisica> clientesPF;
+//		clientesPF=ClienteSrv.getClientesFisicos();
+//		List<PersonaJuridica> clientesPJ;
+//		clientesPJ=ClienteSrv.getClientesJuridicos();
+		List<Cliente> listaClientes;
+		listaClientes=ClienteSrv.getClientes();
 		
-		for (int i=0; i<clientes.size();i++){
-			comboBox_CUITCUIL.addItem(clientes.get(i).getCuit_cuil());
+		for(Cliente c: listaClientes) {
+			comboBox_CUITCUIL.addItem(c);
 		}
+		
+//		Vector<String> allClientes =new Vector<String>();
+//		
+//		for (int i=0; i<listaClientes.size();i++){
+//			if(listaClientes.get(i).getClass()==PersonaJuridica.class) {
+//				allClientes.add(listaClientes.get(i).getCuit_cuil()+" - "+((PersonaJuridica)listaClientes.get(i)).getRazonSocial());
+//			}else {
+//				allClientes.add(listaClientes.get(i).getCuit_cuil()+" - "+((PersonaFisica)listaClientes.get(i)).getApellido()+", "+((PersonaFisica)listaClientes.get(i)).getNombre());
+//			}
+//		}
+//		
+//		
+//		for (int i=0; i<allClientes.size();i++){
+//			comboBox_CUITCUIL.addItem(allClientes.get(i));
+//		}
+		
+//		for (int i=0; i<clientesPF.size();i++){
+//			comboBox_CUITCUIL.addItem(allClientes.get(i));
+//		}
 				
 		contentPane.add(comboBox_CUITCUIL);
 		
@@ -207,7 +233,7 @@ public class ViewVerFactura extends JFrame {
 			public void actionPerformed(ActionEvent e) {			
 				if (getStub()){
 					try {
-					Cliente cliente = ClienteSrv.getClienteByCuit(comboBox_CUITCUIL.getSelectedItem().toString());
+					Cliente cliente = (Cliente) comboBox_CUITCUIL.getSelectedItem();
 					Factura f = FacturaSrv.getFacturaByNro(Integer.parseInt(textField_NroFactura.getText()));
 					
 					if (f == null) {

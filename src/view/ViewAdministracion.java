@@ -116,6 +116,17 @@ public class ViewAdministracion extends JFrame {
 		});
 		button_Facturacion.setBounds(417, 94, 186, 36);
 		contentPane.add(button_Facturacion);
+		
+		JButton btnNewButton_6 = new JButton("Cobro del Banco");
+		btnNewButton_6.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				ViewPagoDelBanco pb = new ViewPagoDelBanco();
+				pb.setVisible(true);
+				
+			}
+		});
+		btnNewButton_6.setBounds(417, 152, 186, 36);
+		contentPane.add(btnNewButton_6);
 	}
-
 }
