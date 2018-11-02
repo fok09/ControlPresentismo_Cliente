@@ -78,7 +78,7 @@ public class ViewCrearFichada extends JFrame {
 			}
 		});
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 372, 233);
+		setBounds(100, 100, 372, 235);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -159,8 +159,16 @@ public class ViewCrearFichada extends JFrame {
 			}
 			}
 		});
-		btnNewButton.setBounds(238, 143, 108, 23);
+		btnNewButton.setBounds(238, 131, 108, 23);
 		contentPane.add(btnNewButton);
+		
+		JButton btnVolver = new JButton("Volver");
+		btnVolver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnVolver.setBounds(257, 165, 89, 23);
+		contentPane.add(btnVolver);
 		
 	}
 }

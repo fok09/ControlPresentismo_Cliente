@@ -160,7 +160,7 @@ public class ViewEliminarCliente extends JFrame {
 		btnEliminarCliente.setBounds(101, 134, 204, 67);
 		contentPane.add(btnEliminarCliente);
 		
-		JButton btnAtras = new JButton("Atras");
+		JButton btnAtras = new JButton("Volver");
 		btnAtras.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
