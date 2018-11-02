@@ -122,6 +122,8 @@ public class ViewAdministracion extends JFrame {
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				dispose();
 			}
 		});
 		btnVolver.setBounds(323, 269, 121, 35);
