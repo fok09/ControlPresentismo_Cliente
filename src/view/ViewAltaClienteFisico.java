@@ -232,6 +232,8 @@ public class ViewAltaClienteFisico extends JFrame {
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				dispose();
 			}
 		});
 		btnVolver.setBounds(260, 323, 104, 23);

@@ -221,6 +221,8 @@ public class ViewAltaClienteJuridico extends JFrame {
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				dispose();
 			}
 		});
 		btnVolver.setBounds(247, 297, 107, 23);

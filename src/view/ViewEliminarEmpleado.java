@@ -155,7 +155,7 @@ public class ViewEliminarEmpleado extends JFrame {
 		btnEliminarEmpleado.setBounds(101, 134, 204, 67);
 		contentPane.add(btnEliminarEmpleado);
 		
-		JButton btnAtras = new JButton("Atras");
+		JButton btnAtras = new JButton("Volver");
 		btnAtras.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
