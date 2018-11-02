@@ -207,9 +207,6 @@ public class ViewVerFactura extends JFrame {
 
 					try {
 						Cliente cliente = (Cliente) comboBox_CUITCUIL.getSelectedItem();
-						// Factura factura = (Factura) comboBox_Factura.getSelectedItem();
-						// f =
-						// FacturaSrv.getFacturaByNro(Integer.parseInt(textField_NroFactura.getText()));
 						facturas = controlPresentismo.getFacturasCliente(cliente);
 						if (comboBox_Factura.getItemCount() > 0)
 							comboBox_Factura.removeAllItems();
@@ -217,7 +214,6 @@ public class ViewVerFactura extends JFrame {
 							comboBox_Factura.addItem(f);
 						}
 					} catch (RemoteException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 

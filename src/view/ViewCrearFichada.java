@@ -25,10 +25,12 @@ import javax.swing.border.EmptyBorder;
 
 import bean.Cliente;
 import bean.Empleado;
+import bean.Factura;
 import dto.FichadaDTO;
 
 import interfaces.SistemaPresentismo;
 import srv.ClienteSrv;
+import srv.EmpleadoSrv;
 
 public class ViewCrearFichada extends JFrame {
 
@@ -37,8 +39,8 @@ public class ViewCrearFichada extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField textField_Legajo;
 	SistemaPresentismo controlPresentismo;
+	private List<Empleado> empleados;
 
 	/**
 	 * Launch the application.
@@ -78,7 +80,7 @@ public class ViewCrearFichada extends JFrame {
 			}
 		});
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 372, 235);
+		setBounds(100, 100, 425, 241);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -89,7 +91,7 @@ public class ViewCrearFichada extends JFrame {
 		contentPane.add(lblTipoDeFichada);
 		
 		JComboBox<String> comboBox_TipoFichada = new JComboBox<String>();
-		comboBox_TipoFichada.setBounds(136, 55, 132, 23);
+		comboBox_TipoFichada.setBounds(136, 55, 146, 23);
 		comboBox_TipoFichada.addItem("Entrada");
 		comboBox_TipoFichada.addItem("Salida");
 		contentPane.add(comboBox_TipoFichada);
@@ -98,24 +100,50 @@ public class ViewCrearFichada extends JFrame {
 		lblEmpleado.setBounds(10, 97, 132, 23);
 		contentPane.add(lblEmpleado);
 		
-		textField_Legajo = new JTextField();
-		textField_Legajo.setBounds(136, 97, 132, 23);
-		contentPane.add(textField_Legajo);
-		textField_Legajo.setColumns(10);
+		JComboBox<Empleado> comboBoxLegajo = new JComboBox<Empleado>();
+		comboBoxLegajo.setBounds(136, 98, 263, 20);
+		List<Empleado> listaEmpleados;
+		listaEmpleados = EmpleadoSrv.getEmpleados();
+
+		for (Empleado e : listaEmpleados) {
+			comboBoxLegajo.addItem(e);
+		}
+		contentPane.add(comboBoxLegajo);
 		
 		JLabel lblEmpresa = new JLabel("Empresa");
 		lblEmpresa.setBounds(10, 11, 108, 23);
 		contentPane.add(lblEmpresa);
-		JComboBox<String> comboBox_Empresa = new JComboBox<String>();
-		comboBox_Empresa.setBounds(136, 12, 132, 22);
-		contentPane.add(comboBox_Empresa);
-		if(getStub()){
-			List<Cliente> clientes;
-			clientes=ClienteSrv.getClientes();
-			for (int i=0; i<clientes.size();i++){
-				comboBox_Empresa.addItem(clientes.get(i).getCuit_cuil());
-			}
+		
+		JComboBox<Cliente> comboBox_Empresa = new JComboBox<Cliente>();
+		comboBox_Empresa.setBounds(136, 12, 263, 22);
+		List<Cliente> listaClientes = ClienteSrv.getClientes();
+		for (Cliente c : listaClientes) {
+			comboBox_Empresa.addItem(c);
 		}
+		contentPane.add(comboBox_Empresa);
+//		if(getStub()){
+//			List<Cliente> clientes;
+//			clientes=ClienteSrv.getClientes();
+//			for (int i=0; i<clientes.size();i++){
+//				comboBox_Empresa.addItem(clientes.get(i).getCuit_cuil());
+//			}
+//		}
+		
+		comboBox_Empresa.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (getStub()) {
+					Cliente cliente = (Cliente) comboBox_Empresa.getSelectedItem();
+					empleados = cliente.getEmpleados();
+					if (comboBoxLegajo.getItemCount() > 0)
+						comboBoxLegajo.removeAllItems();
+					for (Empleado em : empleados) {
+						comboBoxLegajo.addItem(em);
+					}
+
+				}
+			}
+
+		});
 		
 		JButton btnNewButton = new JButton("Fichar");
 		btnNewButton.addActionListener(new ActionListener() {
@@ -124,14 +152,18 @@ public class ViewCrearFichada extends JFrame {
 					try {
 						LocalDateTime hora = LocalDateTime.now();
 						Date fecha = Calendar.getInstance().getTime();
-						List<Cliente> clientes;
-						clientes=ClienteSrv.getClientes();
-						Empleado emp= new Empleado();
-						for(Cliente c: clientes) {
-							if(c.getCuit_cuil().equals(comboBox_Empresa.getSelectedItem())){
-								emp= c.obtenerEmpleadoPorLegajo(textField_Legajo.getText());
-							}
-						}
+//						List<Cliente> clientes;
+//						clientes=ClienteSrv.getClientes();
+//						Empleado emp= new Empleado();
+//						for(Cliente c: clientes) {
+//							if(c.getCuit_cuil().equals(comboBox_Empresa.getSelectedItem())){
+//								emp= c.obtenerEmpleadoPorLegajo(textField_Legajo.getText());
+//							}
+//						}
+						
+						Cliente cliente = (Cliente) comboBox_Empresa.getSelectedItem();
+						Empleado empleado= (Empleado) comboBoxLegajo.getSelectedItem();
+						
 						String tipo;
 						
 						if (comboBox_TipoFichada.getSelectedItem().toString().equals("Entrada")) {
@@ -141,13 +173,13 @@ public class ViewCrearFichada extends JFrame {
 							tipo="S";
 						}
 						
-						if(emp != null) {
+						if(empleado != null) {
 							FichadaDTO fDTO = new FichadaDTO(
 								tipo,
-								emp,
+								empleado,
 								hora,
 								fecha);
-							textField_Legajo.setText("");
+//							textField_Legajo.setText("");
 							controlPresentismo.altaFichada(fDTO);
 						} else {
 							Component frame = null;
@@ -159,7 +191,7 @@ public class ViewCrearFichada extends JFrame {
 			}
 			}
 		});
-		btnNewButton.setBounds(238, 131, 108, 23);
+		btnNewButton.setBounds(291, 162, 108, 23);
 		contentPane.add(btnNewButton);
 		
 		JButton btnVolver = new JButton("Volver");
@@ -167,8 +199,10 @@ public class ViewCrearFichada extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnVolver.setBounds(257, 165, 89, 23);
+		btnVolver.setBounds(10, 162, 89, 23);
 		contentPane.add(btnVolver);
+		
+		
 		
 	}
 }
