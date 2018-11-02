@@ -19,6 +19,7 @@ import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import bean.Cliente;
 import bean.Contratacion;
 import bean.Empleado;
 import bean.Fichada;
@@ -40,10 +41,9 @@ public class ViewEnviarReporteFichadas extends JFrame {
 	private Vector<Vector<String>> datosTabla;
 	private Vector<String> columnNames;
 	private List<Contratacion> contrataciones;
-	private Date cFechaInicio;
-	private Date cFechaFin;
 	private JLabel lblCuitcuil;
 	private List<EmpleadoHorasDTO> empleadoHoras;
+	JComboBox<Contratacion> comboBox_Contratacion;
 
 	
 	/**
@@ -139,39 +139,36 @@ public class ViewEnviarReporteFichadas extends JFrame {
 		contentPane.add(scrollPane);
 		contentPane.add(lblCuitcuil);
 		
-		JComboBox comboBox_Contratacion = new JComboBox();
-		comboBox_Contratacion.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String seleccion = comboBox_Contratacion.getSelectedItem().toString();
-				int cod = Integer.parseInt(seleccion.substring(0,seleccion.indexOf(" ")));
-				for (Contratacion c : contrataciones ) {
-					if (c.getId()==cod) {
-						cFechaInicio = c.getFechaInicial();
-						cFechaFin = c.getFechaFinal();
-					}
-				}
-	
-				
-			}
-		});
+		comboBox_Contratacion = new JComboBox<Contratacion>();
 		comboBox_Contratacion.setBounds(131, 50, 362, 21);
 		contentPane.add(comboBox_Contratacion);
 		
-		JComboBox comboBox_Empresa = new JComboBox();
+		JComboBox<Cliente> comboBox_Empresa = new JComboBox<Cliente>();
+		
+		List<Cliente> listaClientes;
+		listaClientes=ClienteSrv.getClientes();
+		
+		for(Cliente c: listaClientes) {
+			comboBox_Empresa.addItem(c);
+		}
+		
 		comboBox_Empresa.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
 			{
 				if (getStub()) {
 					
 					try {
-						String cuitEmpresa = (String) comboBox_Empresa.getSelectedItem().toString();
-						cuitEmpresa = cuitEmpresa.substring(0,cuitEmpresa.indexOf(" "));
+						Cliente cliente = (Cliente) comboBox_Empresa.getSelectedItem();
 						
-						contrataciones = controlPresentismo.getContratacionesCliente(cuitEmpresa);
-						comboBox_Contratacion.removeAllItems();
+						contrataciones = controlPresentismo.getContratacionesCliente(cliente);
+//						comboBox_Contratacion = new JComboBox<Contratacion>();
+						if(comboBox_Contratacion.getItemCount() > 0)
+							comboBox_Contratacion.removeAllItems();
 						for (Contratacion c : contrataciones){
-							comboBox_Contratacion.addItem(c.getId() + " " + c.getServicio().getNombre() + " - " + c.getFechaInicial() + " a " + c.getFechaFinal());							
+							System.out.println(c.getId());							
+							comboBox_Contratacion.addItem(c);
 						}
+					
 					} catch (RemoteException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -181,13 +178,13 @@ public class ViewEnviarReporteFichadas extends JFrame {
 			}
 			
 		});
-		if(getStub()){
-			List<PersonaJuridica> clientesPJ;
-			clientesPJ=ClienteSrv.getClientesJuridicos();
-			for (int i=0; i<clientesPJ.size();i++){
-				comboBox_Empresa.addItem(clientesPJ.get(i).getCuit_cuil().toString() + " - " + clientesPJ.get(i).getRazonSocial());
-			}
-		}
+//		if(getStub()){
+//			List<PersonaJuridica> clientesPJ;
+//			clientesPJ=ClienteSrv.getClientesJuridicos();
+//			for (int i=0; i<clientesPJ.size();i++){
+//				comboBox_Empresa.addItem(clientesPJ.get(i).getCuit_cuil().toString() + " - " + clientesPJ.get(i).getRazonSocial());
+//			}
+//		}
 		comboBox_Empresa.setBounds(131, 17, 362, 21);
 		contentPane.add(comboBox_Empresa);
 		
@@ -198,21 +195,13 @@ public class ViewEnviarReporteFichadas extends JFrame {
 			public void actionPerformed(ActionEvent arg0)
 			{
 				if (getStub()) {
-					Contratacion cont = new Contratacion();
-					String cuit = (String) comboBox_Empresa.getSelectedItem();
-					String seleccion = comboBox_Contratacion.getSelectedItem().toString();
+					Contratacion cont = ((Contratacion)comboBox_Contratacion.getSelectedItem());
+					String cuit = ((Cliente)comboBox_Empresa.getSelectedItem()).getCuit_cuil();
 					Vector<Vector<String>> dt = new Vector<Vector<String>>();
-					
-					int cod = Integer.parseInt(seleccion.substring(0,seleccion.indexOf(" ")));
-					cuit = cuit.substring(0,cuit.indexOf(" "));
-					for (Contratacion c : contrataciones ) {
-						if (c.getId()==cod) {
-							cont = c;
-						}
-					}
+
 					
 					try {
-						empleadoHoras = controlPresentismo.getHorasTrabajadasTotalesLiqui(cuit,cFechaInicio,cFechaFin);
+						empleadoHoras = controlPresentismo.getHorasTrabajadasTotalesLiqui(cuit,cont.getFechaInicial(),cont.getFechaFinal());
 					} catch (RemoteException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
