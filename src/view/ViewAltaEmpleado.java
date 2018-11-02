@@ -130,14 +130,15 @@ public class ViewAltaEmpleado extends JFrame {
 		lblEmpresa.setBounds(10, 11, 89, 20);
 		contentPane.add(lblEmpresa);
 		
-		JComboBox<String> comboBox_Empresa = new JComboBox<String>();
+		JComboBox<Cliente> comboBox_Empresa = new JComboBox<Cliente>();
 		comboBox_Empresa.setBounds(151, 11, 152, 20);
 		if(getStub()){
 			List<Cliente> clientes;
 			clientes=ClienteSrv.getClientes();
 			
-			for (int i=0; i<clientes.size();i++){
-				comboBox_Empresa.addItem(clientes.get(i).getCuit_cuil());
+			for (Cliente c : clientes){
+//				comboBox_Empresa.addItem(clientes.get(i).getCuit_cuil());
+				comboBox_Empresa.addItem(c);
 			}
 		}
 		contentPane.add(comboBox_Empresa);
@@ -205,6 +206,7 @@ public class ViewAltaEmpleado extends JFrame {
 					@SuppressWarnings("deprecation")
 //					Date fNac = new Date(Integer.parseInt(textField_FNac_DD.getText()), Integer.parseInt(textField_FNac_MM.getText()), Integer.parseInt(textField_FNac_YYYY.getText()));
 					Date fNac = new GregorianCalendar(Integer.parseInt(textField_FNac_YYYY.getText()), (Integer.parseInt(textField_FNac_MM.getText()))-1, Integer.parseInt(textField_FNac_DD.getText())).getTime();
+					Cliente cliente = (Cliente) comboBox_Empresa.getSelectedItem();
 					EmpleadoDTO eDTO = new EmpleadoDTO(
 								//comboBox_Empresa.getSelectedItem().toString(), 
 								textField_Nombre.getText(), 
@@ -231,7 +233,7 @@ public class ViewAltaEmpleado extends JFrame {
 					textField_cantHoras.setText("");
 					
 					
-						controlPresentismo.agregarEmpleado(eDTO,comboBox_Empresa.getSelectedItem().toString());
+						controlPresentismo.agregarEmpleado(eDTO,cliente.getCuit_cuil());
 				} catch (RemoteException e1) {
 					e1.printStackTrace();
 				}}

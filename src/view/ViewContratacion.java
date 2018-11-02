@@ -96,15 +96,15 @@ public class ViewContratacion extends JFrame {
 		JLabel labelEmpresa = new JLabel("Empresa");
 		labelEmpresa.setBounds(10, 54, 132, 23);
 		contentPane.add(labelEmpresa);
-		
-		JComboBox<String> comboBox_Empresa = new JComboBox<String>();
+
+		JComboBox<Cliente> comboBox_Empresa = new JComboBox<Cliente>();
 		comboBox_Empresa.setBounds(136, 55, 132, 23);
 		if(getStub()){
 			List<Cliente> clientes;
 			clientes=ClienteSrv.getClientes();
 			
-			for (int i=0; i<clientes.size();i++){
-				comboBox_Empresa.addItem(clientes.get(i).getCuit_cuil().toString());
+			for (Cliente c : clientes){
+				comboBox_Empresa.addItem(c);
 			}
 		}
 		contentPane.add(comboBox_Empresa);
@@ -218,8 +218,8 @@ public class ViewContratacion extends JFrame {
 						int cod = Integer.parseInt(seleccion.substring(0,seleccion.indexOf(" ")));
 						Servicio sv = new Servicio();
 						sv = ServicioSrv.getServicio(cod);
-						Cliente cl = new Cliente();
-						cl = ClienteSrv.getClienteByCuit(comboBox_Empresa.getSelectedItem().toString());
+						Cliente cl = (Cliente) comboBox_Empresa.getSelectedItem();
+						
 						Date fIni = new GregorianCalendar(Integer.parseInt(textField_FI_AAAA.getText()), (Integer.parseInt(textField_FI_MM.getText()))-1, Integer.parseInt(textField_FI_DD.getText())).getTime();
 						Date fFin = new GregorianCalendar(Integer.parseInt(textField_FF_AAAA.getText()), (Integer.parseInt(textField_FF_MM.getText()))-1, Integer.parseInt(textField_FF_DD.getText())).getTime();
 						ContratacionDTO cDTO = new ContratacionDTO(
